@@ -8,7 +8,7 @@
 #include <sstream>
 using namespace std;
 
-#define TOKOVI_10
+#define TOKOVI_10x
 
 #ifdef TOKOVI_10
 

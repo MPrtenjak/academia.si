@@ -5,7 +5,7 @@
 #include <vector>
 using namespace std;
 
-#define REKURZIVNE_FUNKCIJE_3x
+#define REKURZIVNE_FUNKCIJE_1
 
 #ifdef POLJA_1
 int main() {
@@ -419,8 +419,7 @@ void predaja_po_referenci(Oseba& o) {
 }
 
 void predaja_po_referenci_2(const Oseba& o) {
-    // o.ime = "Spremenjeno ime";
-
+    //o.starost++;
     cout << o.ime << " (" << o.starost << ")";
 }
 
@@ -456,6 +455,12 @@ void povecajStarost(Oseba s[], int n) {
         s[i].starost++;
 }
 
+void povecajStarost_kazalec(Oseba *s, int n) {
+    for (int i = 0; i < n; i++) {
+        s[i].starost++;
+    }
+}
+
 void izpisiOsebo(const Oseba& o) {
     cout << o.ime << " (" << o.starost << " let)" << endl;
 }
@@ -472,6 +477,7 @@ int main() {
 		izpisiOsebo(osebe[i]);
 
     povecajStarost(osebe, 3);
+    povecajStarost_kazalec(osebe, 3);
 
     cout << "Po povecanjem starosti:\n";
     for (int i = 0; i < 3; i++)
@@ -527,6 +533,18 @@ int main() {
 	cout << "Kazalec: " << kazalec << endl;
 	cout << "Vrednost preko kazalca: " << *kazalec << endl;
 
+	double d = 3.14;
+	double* pd = &d;
+
+	cout << "Vrednost d: " << d << endl;
+    cout << "Kazalec: " << pd << endl;
+    cout << "Vrednost preko kazalca: " << *pd << endl;
+
+    int* pi = (int*) &d;
+    cout << "Kazalec: " << pi << endl;
+    cout << "Vrednost preko kazalca: " << *pi << endl;
+
+
     return 0;
 }
 #endif
@@ -544,10 +562,16 @@ void povecaj1(int *a) {
     cout << "V funkciji povecaj po povecanjem: a = " << *a << endl;
 }
 
-void povecaj2(int* b) {
+void povecaj2(int *b) {
     cout << "V funkciji povecaj pred povecanjem: b = " << b << endl;
-    b++;
-    cout << "V funkciji povecaj po povecanjem: b = " << b << endl;
+    cout << "V funkciji povecaj pred povecanjem: b = " << *b << endl;
+
+    // for (int i = 0; i < 5000; i++) {
+        b++;
+        cout << i << endl;
+        cout << "V funkciji povecaj po povecanjem: b = " << b << endl;
+        cout << "V funkciji povecaj po povecanjem: b = " << *b << endl;
+    // }
 }
 
 int main() {
@@ -628,13 +652,15 @@ int main() {
 	int a[5] = { 10, 20, 30, 40, 50 };
 	int* p = a; // ali int* p = &a[0];
 
-	for (int i = 0; i < 5; i++) 
-		cout << "a[" << i << "] = " << *(p + i) << endl;
+    for (int i = 0; i < 5; i++) {
+        cout << "a[" << i << "] = " << a[i] << endl;
+        cout << "a[" << i << "] = " << *(p + i) << endl;
+    }
 
 	cout << "---------------------------------" << endl;
 
 	int* q = a;
-    cout << "a[3] = " << *(p + 3) << endl;
+    cout << "a[3] = " << *(q + 3) << endl;
 
     return 0;
 }
@@ -704,6 +730,10 @@ int main() {
 	oseba->ime = "Maja";
 	oseba->starost = 28;
 
+	Oseba oseba2;
+	oseba2.ime = "Jana";
+	oseba2.starost = 24;
+
 	cout << "Ime: " << oseba->ime << endl;
 	cout << "Starost: " << oseba->starost << endl;
 
@@ -770,7 +800,7 @@ int main() {
 
     cout << "-----------------------" << endl;
     cout << "Vnesene osebe so:\n";
-    for (size_t i = 0; i < osebe.size(); i++)
+    for (int i = 0; i < osebe.size(); i++)
     {
         cout << "Ime: " << osebe[i].ime << ", Starost: " << osebe[i].starost << endl;
     }
@@ -796,12 +826,20 @@ int zmnozi(int a, int b = 2) {
     return a * b;
 }
 
+int sestej(int a, int b = 10, int c = 8) {
+    return a + b + c;
+}
+
 // 4. Z referencami
 void povecaj(int& x) {
     x++;
 }
 
 int main() {
+    sestej(3); 
+    sestej(3, 8);
+	sestej(3, 8, 12);
+
     // 1
     pozdrav();
 
@@ -969,6 +1007,13 @@ int sestej(int a, int b) {
     return a + b;
 }
 
+/* NE GRE - morajo se razlikovati v argumentih */
+/*
+float sestej(int a, int b) {
+    return a + b;
+}
+*/
+
 double sestej(double a, double b) {
     return a + b;
 }
@@ -985,6 +1030,8 @@ int main() {
 	cout << "Sestevek int: " << sestej(int1, int2) << endl;
 	cout << "Sestevek double: " << sestej(double1, double2) << endl;
 	cout << "Sestevek float: " << sestej(float1, float2) << endl;
+
+	auto result = sestej(12, 55);
 
     return 0;
 }
@@ -1020,6 +1067,8 @@ int main() {
 // 
 // 0! = 1
 // Rekurzivno: n! = n * (n-1)!
+//
+// Rekurzivna funkcija za izračun fakultete: f(n) = n * f(n-1)
 
 int fakulteta(int n) {
     if (n == 0)
