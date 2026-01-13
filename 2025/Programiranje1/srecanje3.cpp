@@ -5,7 +5,7 @@
 #include <vector>
 using namespace std;
 
-#define REKURZIVNE_FUNKCIJE_1
+#define REKURZIVNE_FUNKCIJE_1x
 
 #ifdef POLJA_1
 int main() {

@@ -5,7 +5,7 @@
 #include <vector>
 using namespace std;
 
-#define ZAPOSLENI_10x
+#define ZAPOSLENI_10
 
 #ifdef OOP_10
 struct Student {
@@ -92,9 +92,13 @@ struct Student {
 };
 
 int main() {
-    Student demo;
-	demo.ustvariStudenta();
-    demo.izpisiStudenta();
+    Student ana;
+	ana.ustvariStudenta();
+	cout << "moje ime je : " << ana.ime << endl;
+    ana.ime = "anamarija";
+
+    ana.izpisiStudenta();
+
 
     Student novStudent;
     novStudent.vnesiStudenta();
@@ -148,7 +152,7 @@ int main() {
     novStudent.izpisiStudenta();
 
 	cout << "----------------------------" << endl;
-    novStudent.ime = "Mojca";
+    novStudent.ime = "mojca";
 	novStudent.ocene[0] = 10;
 	demo.ime = "Demo student";
 	demo.ocene[0] = 5;
@@ -193,6 +197,20 @@ public:
             cin >> ocene[i];
         }
     }
+
+    void SpremeniIme(const string& novoIme) {
+		if (novoIme.empty()) {
+            cout << "Ime ne sme biti prazno!" << endl;
+            return;
+        }
+
+        if (novoIme[0] < 'A' || novoIme[0] > 'Z') {
+            cout << "Ime mora začeti z veliko začetnico!" << endl;
+            return;
+		}
+
+        ime = novoIme;
+	}
 };
 
 int main() {
@@ -205,10 +223,17 @@ int main() {
     novStudent.izpisiStudenta();
 
     cout << "----------------------------" << endl;
+    /*
     novStudent.ime = "Mojca";
     novStudent.ocene[0] = 10;
     demo.ime = "Demo student";
     demo.ocene[0] = 5;
+    */
+
+    novStudent.SpremeniIme("");
+    novStudent.SpremeniIme("mojca");
+
+    // novStudent.SpremeniIme("Mojca");
 
     demo.izpisiStudenta();
     novStudent.izpisiStudenta();
@@ -225,7 +250,7 @@ private:
     int starost;
 
 public:
-    Student(string i, int s) {
+    Student(string  i = "", int s = 0) {
         ime = i;
         starost = s;
     }
@@ -239,6 +264,7 @@ int main() {
     // Student demo;
 	Student s1("Ana", 20);
 	Student s2("Boris", 22);
+	Student s3;
 	s1.izpisi();
 	s2.izpisi();
 
@@ -316,8 +342,8 @@ private:
 	string ime;
 
 public:
-    Student(string ime) {
-		this->ime = ime;
+    Student(string _ime) {
+		ime = _ime;
         cout << "Konstruktor za " << ime << "\n";
     }
 
@@ -352,17 +378,27 @@ private:
 public:
     Primer() {
         a = new int[5];
-        cout << "Pomnilnik alociran\n";
+        // cout << "Pomnilnik alociran\n";
     }
 
     ~Primer() {
         delete[] a;
-        cout << "Pomnilnik sproscen\n";
+        // cout << "Pomnilnik sproscen\n";
     }
 };
 
+void Funkcija_ki_nbe_sprosca_pomnilnika() {
+    Primer p[100000];
+}
+
 int main() {
     Primer p;
+
+    for (size_t i = 0; i < 100000; i++)
+    {
+		cout << i << "\n";
+        Funkcija_ki_nbe_sprosca_pomnilnika();
+    }
 
 	cout << "uporabljamo p\n";
 
@@ -534,13 +570,14 @@ private:
 
 public:
     Student(string i, int s, int l)
-    : Oseba(i, s) 
+        : Oseba(i, s) 
     {
         letnik = l;
     }
 
     void izpisi() {
         Oseba::izpisi();
+        cout << "Ime: " << ime << endl;
         cout << "Letnik: " << letnik << endl;
     }
 };
@@ -624,7 +661,7 @@ int main()
     s2->izpisi();   // izpiše: "Sem student"
 
     Oseba* os1 = new Student();
-    os1->izpisi();   // izpiše: "Sem oseba" <--- !!!!!
+    os1->izpisi();   // izpiše: "Sem student" <--- !!!!!
 
     return 0;
 }
@@ -676,6 +713,15 @@ int main() {
 class Oseba {
 public:
     virtual void izpisi() = 0;
+
+    void naslov() {
+        cout << "To je naslov Osebe" << endl;
+    }
+};
+
+class Hisnik : public Oseba {
+protected:
+    string zadlozitev;
 };
 
 class Student : public Oseba {
@@ -696,7 +742,7 @@ int main() {
     Oseba* seznam[3];
     seznam[0] = new Student();
     seznam[1] = new Profesor();
-    seznam[2] = new Oseba();
+    seznam[2] = new Student();
 
     for (int i = 0; i < 3; i++) {
         seznam[i]->izpisi();
@@ -807,7 +853,16 @@ int main() {
 #ifdef GEOMETRIJSKI_LIKI_10
 
 class GeometrijskiLik {
+protected:
+    string opis;
+
 public:
+    GeometrijskiLik(string o) {
+        opis = o;
+    }
+
+    string dobiOpis() { return opis; }
+
     virtual double povrsina() = 0;
     virtual double obseg() = 0;
     virtual ~GeometrijskiLik() {}
@@ -818,7 +873,7 @@ private:
     double polmer;
 
 public:
-    Krog(double r) : polmer(r) {}
+    Krog(double r) : GeometrijskiLik("KROG"), polmer(r) {}
 
     double povrsina() override {
         return 3.14159 * polmer * polmer;
@@ -835,7 +890,7 @@ private:
 
 public:
     Pravokotnik(double sirina, double visina) 
-        : sirina(sirina), visina(visina) {}
+        : GeometrijskiLik("PRAVOKOTNIK"), sirina(sirina), visina(visina) {}
 
     double povrsina() override {
         return sirina * visina;
@@ -846,12 +901,39 @@ public:
     }
 };
 
+
+class Trikotnik : public GeometrijskiLik {
+private:
+    double osnova, visina;
+
+public:
+    Trikotnik(double osnova, double visina)
+        : GeometrijskiLik("TRIKOTNIK"), osnova(osnova), visina(visina) {
+    }
+
+    double povrsina() override {
+        return osnova * visina / 2;
+    }
+
+    double obseg() override {
+        return osnova + 2 * visina;     // ni matematično pravilno
+    }
+};
+
 int main() {
-    GeometrijskiLik* oblike[2];
+    const int velikost = 5;
+
+    GeometrijskiLik* oblike[velikost];
     oblike[0] = new Krog(5);
     oblike[1] = new Pravokotnik(4, 6);
+    oblike[2] = new Krog(10);
+    oblike[3] = new Trikotnik(12, 4);
+    oblike[4] = new Krog(5);
 
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < velikost; i++) {
+        cout << endl << "--------------------------";
+        cout << "#: " << i << endl;
+        cout << "Lik: " << oblike[i]->dobiOpis() << endl;
         cout << "Ploščina: " << oblike[i]->povrsina() << endl;
         cout << "Obseg: " << oblike[i]->obseg() << endl;
     }
@@ -889,6 +971,10 @@ public:
         : Zaposleni(ime), mesecnaPlaca(placa) {
     }
 
+    double dobiMesecnoPlaco() {
+        return mesecnaPlaca;
+    }
+
     double placa() override {
         return mesecnaPlaca;
     }
@@ -917,12 +1003,31 @@ public:
     }
 };
 
+class Legenda : public RednoZaposleni {
+private:
+    int delovnaDoba;
+
+public:
+    Legenda(string ime, double placa, int delovnaDoba)
+        : RednoZaposleni(ime, placa), delovnaDoba(delovnaDoba) {
+    }
+
+    double placa() override {
+        return dobiMesecnoPlaco() * (1 + (double)(delovnaDoba / 100.0));
+    }
+
+    void izpisi() override {
+        cout << ime << " (legenda): " << placa() << endl;
+    }
+};
+
 int main() {
-    Zaposleni* seznam[2];
+    Zaposleni* seznam[3];
     seznam[0] = new RednoZaposleni("Ana", 2000);
     seznam[1] = new StudentskoDelo("Luka", 80, 7.5);
+    seznam[2] = new Legenda("Miha", 2000, 20);
 
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < 3; i++)
         seznam[i]->izpisi();
 
     for (int i = 0; i < 2; i++)
