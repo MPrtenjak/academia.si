@@ -5,1033 +5,892 @@
 #include <vector>
 using namespace std;
 
-#define ZAPOSLENI_10
+#define REFERENCE_1x
 
-#ifdef OOP_10
+#ifdef REFERENCE_1
+int main() {
+    int a = 5;
+    cout << "Pred spremembo: a = " << a << endl;
+
+    int& r = a;
+    cout << "Referenca r na a: r = " << r << endl;
+
+    r = 10;
+    cout << "Po spremembi preko reference r: a = " << a << ", r = " << r << endl;
+
+    a = 33;
+    cout << "Po spremembi preko vrednosti a: a = " << a << ", r = " << r << endl;
+
+    return 0;
+}
+#endif
+
+#ifdef REFERENCE_IN_FUNKCIJE_1
+void povecaj(int x) {
+    cout << "V funkciji povecaj pred povecanjem: x = " << x << endl;
+    x++;
+    cout << "V funkciji povecaj po povecanjem: x = " << x << endl;
+}
+
+void povecaj1(int a) {
+    cout << "V funkciji povecaj pred povecanjem: x = " << a << endl;
+    a++;
+    cout << "V funkciji povecaj po povecanjem: x = " << a << endl;
+}
+
+int main() {
+    int a = 5;
+
+    cout << "Pred klicem funkcije povecaj: a = " << a << endl;
+    povecaj(a);
+    cout << "Po klicu funkcije povecaj: a = " << a << endl;
+
+    cout << "Pred klicem funkcije povecaj1: a = " << a << endl;
+    povecaj(a);
+    cout << "Po klicu funkcije povecaj1: a = " << a << endl;
+
+    return 0;
+}
+#endif
+
+#ifdef REFERENCE_IN_FUNKCIJE_2
+void povecaj(int& x) {
+    cout << "V funkciji povecaj pred povecanjem: x = " << x << endl;
+    x++;
+    cout << "V funkciji povecaj po povecanjem: x = " << x << endl;
+}
+
+void povecaj1(int& a) {
+    cout << "V funkciji povecaj pred povecanjem: a = " << a << endl;
+    a++;
+    cout << "V funkciji povecaj po povecanjem: a = " << a << endl;
+}
+
+int main() {
+    int a = 5;
+
+    cout << "Pred klicem funkcije povecaj: a = " << a << endl;
+    povecaj(a);
+    cout << "Po klicu funkcije povecaj: a = " << a << endl;
+
+    cout << "Pred klicem funkcije povecaj1: a = " << a << endl;
+    povecaj1(a);
+    cout << "Po klicu funkcije povecaj1: a = " << a << endl;
+
+    return 0;
+}
+#endif
+
+#ifdef REFERENCE_IN_FUNKCIJE_3
+void swap_ne_deluje(int a, int b) {
+    int temp = a;
+    a = b;
+    b = temp;
+}
+
+void swap_deluje(int& a, int& b) {
+    int temp = a;
+    a = b;
+    b = temp;
+}
+
+int main() {
+    int vrednost1 = 10;
+    int vrednost2 = 20;
+
+    cout << "Pred klicem swap_ne_deluje: vrednost1 = " << vrednost1 << ", vrednost2 = " << vrednost2 << endl;
+    swap_ne_deluje(vrednost1, vrednost2);
+    cout << "Po klicu swap_ne_deluje: vrednost1 = " << vrednost1 << ", vrednost2 = " << vrednost2 << endl;
+
+    cout << "Pred klicem swap_deluje: vrednost1 = " << vrednost1 << ", vrednost2 = " << vrednost2 << endl;
+    swap_deluje(vrednost1, vrednost2);
+    cout << "Po klicu swap_deluje: vrednost1 = " << vrednost1 << ", vrednost2 = " << vrednost2 << endl;
+
+    return 0;
+}
+#endif
+
+
+#ifdef REFERENCE_IN_FUNKCIJE_4
+void minMax(int a, int b, int& min, int& max) {
+    if (a < b) {
+        min = a;
+        max = b;
+    }
+    else {
+        min = b;
+        max = a;
+    }
+}
+
+int main() {
+    int vrednost1 = 33, vrednost2 = 105;
+    int manjsa, vecja;
+
+    minMax(vrednost1, vrednost2, manjsa, vecja);
+    cout << "Manjsa: " << manjsa << ", Vecja: " << vecja << endl;
+
+    return 0;
+}
+#endif
+
+#ifdef REFERENCE_IN_FUNKCIJE_5
+struct Oseba {
+    string ime;
+    int starost;
+};
+
+// kopiranje
+void predaja_po_vrednosti(Oseba o) {
+    o.starost++;
+}
+
+// ni kopiranja
+void predaja_po_referenci(Oseba& o) {
+    o.starost++;
+}
+
+void predaja_po_referenci_2(const Oseba& o) {
+    //o.starost++;
+    cout << o.ime << " (" << o.starost << ")";
+}
+
+int main() {
+    Oseba oseba;
+    oseba.ime = "Luka";
+    oseba.starost = 25;
+
+    cout << "Pred klicem funkcije predaja_po_vrednosti: " << oseba.ime << ", starost: " << oseba.starost << endl;
+    predaja_po_vrednosti(oseba);
+    cout << "Po klicu funkcije predaja_po_vrednosti: " << oseba.ime << ", starost: " << oseba.starost << endl;
+
+    cout << "Pred klicem funkcije predaja_po_referenci: " << oseba.ime << ", starost: " << oseba.starost << endl;
+    predaja_po_referenci(oseba);
+    cout << "Po klicu funkcije predaja_po_referenci: " << oseba.ime << ", starost: " << oseba.starost << endl;
+
+
+    cout << "Klic funkcije predaja_po_referenci_2: ";
+    predaja_po_referenci_2(oseba);
+
+    return 0;
+}
+#endif
+
+#ifdef REFERENCE_IN_FUNKCIJE_6
+struct Oseba {
+    string ime;
+    int starost;
+};
+
+void povecajStarost(Oseba s[], int n) {
+    for (int i = 0; i < n; i++)
+        s[i].starost++;
+}
+
+void povecajStarost_kazalec(Oseba* s, int n) {
+    for (int i = 0; i < n; i++) {
+        s[i].starost++;
+    }
+}
+
+void izpisiOsebo(const Oseba& o) {
+    cout << o.ime << " (" << o.starost << " let)" << endl;
+}
+
+int main() {
+    Oseba osebe[3] = {
+        {"Ana", 20},
+        {"Boris", 22},
+        {"Cilka", 19}
+    };
+
+    cout << "Pred povecanjem starosti:\n";
+    for (int i = 0; i < 3; i++)
+        izpisiOsebo(osebe[i]);
+
+    povecajStarost(osebe, 3);
+    povecajStarost_kazalec(osebe, 3);
+
+    cout << "Po povecanjem starosti:\n";
+    for (int i = 0; i < 3; i++)
+        izpisiOsebo(osebe[i]);
+
+    return 0;
+}
+#endif
+
+#ifdef REFERENCE_IN_FUNKCIJE_7
+struct Oseba {
+    string ime;
+    int starost;
+};
+
+//void povecajStarost(Oseba& s[], int n) {
+void povecajStarost(Oseba(&s)[], int n) {
+    for (int i = 0; i < n; i++)
+        s[i].starost++;
+}
+
+void izpisiOsebo(const Oseba& o) {
+    cout << o.ime << " (" << o.starost << " let)" << endl;
+}
+
+int main() {
+    Oseba osebe[3] = {
+        {"Ana", 20},
+        {"Boris", 22},
+        {"Cilka", 19}
+    };
+
+    cout << "Pred povecanjem starosti:\n";
+    for (int i = 0; i < 3; i++)
+        izpisiOsebo(osebe[i]);
+
+    povecajStarost(osebe, 3);
+
+    cout << "Po povecanjem starosti:\n";
+    for (int i = 0; i < 3; i++)
+        izpisiOsebo(osebe[i]);
+
+    return 0;
+}
+#endif
+
+#ifdef KAZALCI_1
+int main() {
+    int vrednost = 42;
+    int* kazalec = &vrednost;
+
+    cout << "Vrednost: " << vrednost << endl;
+    cout << "Kazalec: " << kazalec << endl;
+    cout << "Vrednost preko kazalca: " << *kazalec << endl;
+
+    double d = 3.14;
+    double* pd = &d;
+
+    cout << "Vrednost d: " << d << endl;
+    cout << "Kazalec: " << pd << endl;
+    cout << "Vrednost preko kazalca: " << *pd << endl;
+
+    int* pi = (int*)&d;
+    cout << "Kazalec: " << pi << endl;
+    cout << "Vrednost preko kazalca: " << *pi << endl;
+
+
+    return 0;
+}
+#endif
+
+#ifdef KAZALCI_IN_FUNKCIJE_1
+void povecaj(int* x) {
+    cout << "V funkciji povecaj pred povecanjem: x = " << *x << endl;
+    (*x)++;
+    cout << "V funkciji povecaj po povecanjem: x = " << *x << endl;
+}
+
+void povecaj1(int* a) {
+    cout << "V funkciji povecaj pred povecanjem: a = " << *a << endl;
+    (*a)++;
+    cout << "V funkciji povecaj po povecanjem: a = " << *a << endl;
+}
+
+void povecaj2(int* b) {
+    cout << "V funkciji povecaj pred povecanjem: b = " << b << endl;
+    cout << "V funkciji povecaj pred povecanjem: b = " << *b << endl;
+
+    // for (int i = 0; i < 5000; i++) {
+    b++;
+    cout << i << endl;
+    cout << "V funkciji povecaj po povecanjem: b = " << b << endl;
+    cout << "V funkciji povecaj po povecanjem: b = " << *b << endl;
+    // }
+}
+
+int main() {
+    int a = 5;
+
+    cout << "Pred klicem funkcije povecaj: a = " << a << endl;
+    povecaj(&a);    // podati moramo referenco na a
+    cout << "Po klicu funkcije povecaj: a = " << a << endl;
+
+    cout << "Pred klicem funkcije povecaj1: a = " << a << endl;
+    povecaj1(&a);    // podati moramo referenco na a
+    cout << "Po klicu funkcije povecaj1: a = " << a << endl;
+
+    cout << "Pred klicem funkcije povecaj1: a = " << a << endl;
+    povecaj2(&a);    // podati moramo referenco na a
+    cout << "Po klicu funkcije povecaj1: a = " << a << endl;
+
+    return 0;
+}
+#endif
+
+#ifdef KAZALCI_IN_FUNKCIJE_2
+void swap_ne_deluje(int a, int b) {
+    int temp = a;
+    a = b;
+    b = temp;
+}
+
+void swap_deluje(int* a, int* b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int main() {
+    int vrednost1 = 10;
+    int vrednost2 = 20;
+
+    cout << "Pred klicem swap_ne_deluje: vrednost1 = " << vrednost1 << ", vrednost2 = " << vrednost2 << endl;
+    swap_ne_deluje(vrednost1, vrednost2);
+    cout << "Po klicu swap_ne_deluje: vrednost1 = " << vrednost1 << ", vrednost2 = " << vrednost2 << endl;
+
+    cout << "Pred klicem swap_deluje: vrednost1 = " << vrednost1 << ", vrednost2 = " << vrednost2 << endl;
+    swap_deluje(&vrednost1, &vrednost2);
+    cout << "Po klicu swap_deluje: vrednost1 = " << vrednost1 << ", vrednost2 = " << vrednost2 << endl;
+
+    return 0;
+}
+#endif
+
+#ifdef KAZALCI_IN_FUNKCIJE_3
+struct Oseba {
+    string ime;
+    int starost;
+};
+
+void postaraj(Oseba* o) {
+    o->starost++;
+
+    (*o).starost++;
+}
+
+int main() {
+    Oseba oseba;
+    oseba.ime = "Luka";
+    oseba.starost = 25;
+
+    cout << "Pred klicem funkcije postaraj: " << oseba.ime << ", starost: " << oseba.starost << endl;
+    postaraj(&oseba);
+    cout << "Po klicu funkcije postaraj: " << oseba.ime << ", starost: " << oseba.starost << endl;
+
+    return 0;
+}
+#endif
+
+#ifdef KAZALCI_IN_POLJA_1
+int main() {
+    int a[5] = { 10, 20, 30, 40, 50 };
+    int* p = a; // ali int* p = &a[0];
+
+    for (int i = 0; i < 5; i++) {
+        cout << "a[" << i << "] = " << a[i] << endl;
+        cout << "a[" << i << "] = " << *(p + i) << endl;
+    }
+
+    cout << "---------------------------------" << endl;
+
+    int* q = a;
+    cout << "a[3] = " << *(q + 3) << endl;
+
+    return 0;
+}
+#endif
+
+#ifdef DINAMICNA_POLJA_1
+int main() {
+    int* stevila;
+    int velikost;
+
+    cout << "Vnesi velikost polja: ";
+    cin >> velikost;
+
+    stevila = new int[velikost];
+
+    cout << "Vnesi " << velikost << " stevil:\n";
+    for (int i = 0; i < velikost; i++)
+        cin >> stevila[i];
+
+    cout << "Vnesena stevila so:\n";
+    for (int i = 0; i < velikost; i++)
+        cout << stevila[i] << " ";
+
+    delete[] stevila;
+
+    return 0;
+}
+#endif
+
+#ifdef DINAMICNA_POLJA_2
+int* ustvariTabelo(int n) {
+    int* tabela = new int[n];
+
+    for (int i = 0; i < n; i++)
+        tabela[i] = rand() % 100; // nakljucno stevilo med 0 in 99
+
+    return tabela;
+}
+
+int main() {
+    int* stevila;
+    int velikost;
+
+    cout << "Vnesi velikost tabele: ";
+    cin >> velikost;
+
+    stevila = ustvariTabelo(velikost);
+
+    cout << "Generirana stevila so:\n";
+    for (int i = 0; i < velikost; i++)
+        cout << stevila[i] << " ";
+
+    delete[] stevila;   // NE POZABI!!!!!
+
+    return 0;
+}
+#endif
+
+#ifdef DINAMICNE_STRUKTURE_1
+struct Oseba {
+    string ime;
+    int starost;
+};
+
+int main() {
+    Oseba* oseba = new Oseba;
+    oseba->ime = "Maja";
+    oseba->starost = 28;
+
+    Oseba oseba2;
+    oseba2.ime = "Jana";
+    oseba2.starost = 24;
+
+    cout << "Ime: " << oseba->ime << endl;
+    cout << "Starost: " << oseba->starost << endl;
+
+    delete oseba;
+
+    return 0;
+}
+#endif
+
+
+#ifdef DINAMICNE_STRUKTURE_2
+struct Oseba {
+    string ime;
+    int starost;
+};
+
+int main() {
+    int n = 3;
+    Oseba* osebe = new Oseba[n];
+
+    osebe[0].ime = "Ana";
+    osebe[0].starost = 20;
+    osebe[1].ime = "Boris";
+    osebe[1].starost = 22;
+    osebe[2].ime = "Cilka";
+    osebe[2].starost = 19;
+
+    for (int i = 0; i < n; i++) {
+        cout << "Ime: " << osebe[i].ime << ", Starost: " << osebe[i].starost << endl;
+    }
+
+    delete[] osebe;
+
+    return 0;
+}
+#endif
+
+#ifdef DINAMICNE_STRUKTURE_3
+struct Oseba {
+    string ime;
+    int starost;
+};
+
+int main() {
+    vector<Oseba> osebe;
+
+    int n;
+    cout << "Vnesi stevilo oseb: ";
+    cin >> n;
+    for (int i = 0; i < n; i++) {
+        Oseba o;
+        cout << "Vnesi ime osebe: ";
+        cin >> o.ime;
+        cout << "Vnesi starost osebe: ";
+        cin >> o.starost;
+        osebe.push_back(o);
+    }
+
+    cout << "-----------------------" << endl;
+    cout << "Vnesene osebe so:\n";
+    for (const Oseba& o : osebe) {
+        cout << "Ime: " << o.ime << ", Starost: " << o.starost << endl;
+    }
+
+    cout << "-----------------------" << endl;
+    cout << "Vnesene osebe so:\n";
+    for (int i = 0; i < osebe.size(); i++)
+    {
+        cout << "Ime: " << osebe[i].ime << ", Starost: " << osebe[i].starost << endl;
+    }
+
+
+    return 0;
+}
+#endif
+
+#ifdef FUNKCIJE_1
+// 1. Brez parametrov, brez vračila
+void pozdrav() {
+    cout << "Pozdravljen uporabnik!" << endl;
+}
+
+// 2. S parametri in vračilom
+int vsota(int a, int b) {
+    return a + b;
+}
+
+// 3. S privzetimi parametri
+int zmnozi(int a, int b = 2) {
+    return a * b;
+}
+
+int sestej(int a, int b = 10, int c = 8) {
+    return a + b + c;
+}
+
+// 4. Z referencami
+void povecaj(int& x) {
+    x++;
+}
+
+int main() {
+    sestej(3);
+    sestej(3, 8);
+    sestej(3, 8, 12);
+
+    // 1
+    pozdrav();
+
+    // 2
+    int r = vsota(3, 5);
+    cout << "Vsota = " << r << endl;
+
+    // 3
+    cout << "Zmnozi(5) = " << zmnozi(5) << endl;
+    cout << "Zmnozi(5, 3) = " << zmnozi(5, 3) << endl;
+
+    // 4
+    int a = 10;
+    povecaj(a);
+    cout << "Povecana vrednost = " << a << endl;
+
+    return 0;
+}
+
+#endif
+
+#ifdef FUNKCIJE_2
+const int ST_OCEN = 5;
+
+// -------------------- STRUKTURA --------------------
 struct Student {
     string ime;
-    int ocene[5];
+    int ocene[ST_OCEN];
 };
+
+// -------------------- FUNKCIJE ZA POLJE --------------------
+double povprecjePolja(const int a[], int n) {
+    int sum = 0;
+    for (int i = 0; i < n; i++)
+        sum += a[i];
+    return (double)sum / n;
+}
+
+// -------------------- FUNKCIJE ZA STRUKTURO --------------------
+Student ustvariStudentaDemo() {
+    Student s;
+    s.ime = "Ana";
+    for (int i = 0; i < ST_OCEN; i++)
+        s.ocene[i] = 6 + i; // 6,7,8,9,10
+    return s;
+}
 
 void izpisiStudenta(const Student& s) {
     cout << "Ime: " << s.ime << endl;
     cout << "Ocene: ";
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < ST_OCEN; i++)
         cout << s.ocene[i] << " ";
-    }
     cout << endl;
 }
 
-Student ustvariStudenta() {
-    Student s;
-    s.ime = "Ana";
-    s.ocene[0] = 6;
-    s.ocene[1] = 7;
-    s.ocene[2] = 8;
-    s.ocene[3] = 9;
-    s.ocene[4] = 10;
-    return s;
+double povprecjeStudenta(const Student& s) {
+    return povprecjePolja(s.ocene, ST_OCEN);
 }
 
-Student vnesiStudenta() {
-    Student s;
-    cout << "Vnesi ime studenta: ";
-    cin >> s.ime;
-    cout << "Vnesi 5 ocen:\n";
-    for (int i = 0; i < 5; i++) {
-        cin >> s.ocene[i];
+void dodajBonus(Student& s, int bonus) {
+    for (int i = 0; i < ST_OCEN; i++) {
+        s.ocene[i] += bonus;
+        if (s.ocene[i] > 10) s.ocene[i] = 10;
     }
-    return s;
 }
 
-int main() {
-	Student demo = ustvariStudenta();
-	cout << "\nDEMO student (ustvarjen v funkciji):\n";
-	izpisiStudenta(demo);
-
-	cout << "\nVnesi podatke za novega studenta:\n";
-	Student novStudent = vnesiStudenta();
-	cout << "\nVneseni student:\n";
-	izpisiStudenta(novStudent);
-
-    return 0;
-}
-#endif
-
-#ifdef OOP_20
-struct Student {
-    string ime;
-    int ocene[5];
-
-    void izpisiStudenta() {
-        cout << "Ime: " << ime << endl;
-        cout << "Ocene: ";
-        for (int i = 0; i < 5; i++) {
-            cout << ocene[i] << " ";
-        }
-        cout << endl;
-    }
-
-    void ustvariStudenta() {
-        ime = "Ana";
-        ocene[0] = 6;
-        ocene[1] = 7;
-        ocene[2] = 8;
-        ocene[3] = 9;
-        ocene[4] = 10;
-    }
-
-    void vnesiStudenta() {
-        cout << "Vnesi ime studenta: ";
-        cin >> ime;
-        cout << "Vnesi 5 ocen:\n";
-        for (int i = 0; i < 5; i++) {
-            cin >> ocene[i];
-        }
-    }
-};
-
-int main() {
-    Student ana;
-	ana.ustvariStudenta();
-	cout << "moje ime je : " << ana.ime << endl;
-    ana.ime = "anamarija";
-
-    ana.izpisiStudenta();
-
-
-    Student novStudent;
-    novStudent.vnesiStudenta();
-    novStudent.izpisiStudenta();
-
-    return 0;
-}
-#endif
-
-#ifdef OOP_30
-class Student {
-public:
-    string ime;
-    int ocene[5];
-
-    void izpisiStudenta() {
-        cout << "Ime: " << ime << endl;
-        cout << "Ocene: ";
-        for (int i = 0; i < 5; i++) {
-            cout << ocene[i] << " ";
-        }
-        cout << endl;
-    }
-
-    void ustvariStudenta() {
-        ime = "Ana";
-        ocene[0] = 6;
-        ocene[1] = 7;
-        ocene[2] = 8;
-        ocene[3] = 9;
-        ocene[4] = 10;
-    }
-
-    void vnesiStudenta() {
-        cout << "Vnesi ime studenta: ";
-        cin >> ime;
-        cout << "Vnesi 5 ocen:\n";
-        for (int i = 0; i < 5; i++) {
-            cin >> ocene[i];
-        }
-    }
-};
-
-int main() {
-    Student demo;
-    demo.ustvariStudenta();
-    demo.izpisiStudenta();
-
-    Student novStudent;
-    novStudent.vnesiStudenta();
-    novStudent.izpisiStudenta();
-
-	cout << "----------------------------" << endl;
-    novStudent.ime = "mojca";
-	novStudent.ocene[0] = 10;
-	demo.ime = "Demo student";
-	demo.ocene[0] = 5;
-
-	demo.izpisiStudenta();
-	novStudent.izpisiStudenta();
-
-    return 0;
-}
-#endif
-
-#ifdef ENKAPSULACIJA_10
-class Student {
-private:
-    string ime;
-    int ocene[5];
-
-public:
-    void izpisiStudenta() {
-        cout << "Ime: " << ime << endl;
-        cout << "Ocene: ";
-        for (int i = 0; i < 5; i++) {
-            cout << ocene[i] << " ";
-        }
-        cout << endl;
-    }
-
-    void ustvariStudenta() {
-        ime = "Ana";
-        ocene[0] = 6;
-        ocene[1] = 7;
-        ocene[2] = 8;
-        ocene[3] = 9;
-        ocene[4] = 10;
-    }
-
-    void vnesiStudenta() {
-        cout << "Vnesi ime studenta: ";
-        cin >> ime;
-        cout << "Vnesi 5 ocen:\n";
-        for (int i = 0; i < 5; i++) {
-            cin >> ocene[i];
-        }
-    }
-
-    void SpremeniIme(const string& novoIme) {
-		if (novoIme.empty()) {
-            cout << "Ime ne sme biti prazno!" << endl;
-            return;
-        }
-
-        if (novoIme[0] < 'A' || novoIme[0] > 'Z') {
-            cout << "Ime mora začeti z veliko začetnico!" << endl;
-            return;
-		}
-
-        ime = novoIme;
-	}
-};
-
-int main() {
-    Student demo;
-    demo.ustvariStudenta();
-    demo.izpisiStudenta();
-
-    Student novStudent;
-    novStudent.vnesiStudenta();
-    novStudent.izpisiStudenta();
-
-    cout << "----------------------------" << endl;
-    /*
-    novStudent.ime = "Mojca";
-    novStudent.ocene[0] = 10;
-    demo.ime = "Demo student";
-    demo.ocene[0] = 5;
-    */
-
-    novStudent.SpremeniIme("");
-    novStudent.SpremeniIme("mojca");
-
-    // novStudent.SpremeniIme("Mojca");
-
-    demo.izpisiStudenta();
-    novStudent.izpisiStudenta();
-
-    return 0;
-}
-#endif
-
-
-#ifdef KONSTRUKTOR_10
-class Student {
-private:
-    string ime;
-    int starost;
-
-public:
-    Student(string  i = "", int s = 0) {
-        ime = i;
-        starost = s;
-    }
-
-    void izpisi() {
-        cout << ime << " (" << starost << " let)" << endl;
-    }
-};
-
-int main() {
-    // Student demo;
-	Student s1("Ana", 20);
-	Student s2("Boris", 22);
-	Student s3;
-	s1.izpisi();
-	s2.izpisi();
-
-    return 0;
-}
-#endif
-
-#ifdef PRIVZETNI_KONSTRUKTOR_10
-class Student {
-private:
-    string ime;
-    int starost;
-
-public:
-    Student() {
-        ime = "Neznan";
-        starost = 0;
-	}
-
-    //Student(string i = "miha", int s = 10) {
-    Student(string i, int s) {
-        ime = i;
-        starost = s;
-    }
-
-    void izpisi() {
-        cout << ime << " (" << starost << " let)" << endl;
-    }
-};
-
-int main() {
-    Student demo;
-    Student s1("Ana", 20);
-    Student s2("Boris", 22);
-
-	demo.izpisi();
-    s1.izpisi();
-    s2.izpisi();
-
-    return 0;
-}
-#endif
-
-#ifdef DESTRUKTOR_10
-class Student {
-public:
-    Student() {
-        cout << "Konstruktor\n";
-    }
-
-    ~Student() {
-        cout << "Destruktor\n";
-    }
-};
-
-int main() {
-    Student s;
-    cout << "KORAK 1\n";
-
-	Student* p = new Student();
-	cout << "KORAK 2\n";
-	delete p;
-
-	Student studenti[3];
-    cout << "KORAK 3\n";
-
-    return 0;
-}
-#endif
-
-
-#ifdef DESTRUKTOR_20
-class Student {
-private:
-	string ime;
-
-public:
-    Student(string _ime) {
-		ime = _ime;
-        cout << "Konstruktor za " << ime << "\n";
-    }
-
-    ~Student() {
-        cout << "Destruktor za " << ime << "\n";
-    }
-};
-
-int main() {
-    Student s("s");
-    cout << "KORAK 1\n";
-
-    Student* p = new Student("p");
-    cout << "KORAK 2\n";
-    delete p;
-
-	Student studenti[3] = { Student("Student1"), Student("Student2"), Student("Student3") };
-    cout << "KORAK 3\n";
-
-	cout << "Destruktorji se bodo sedaj poklicali ob izhodu iz main funkcije.\n";
-	cout << "Kličejo se v obratnem vrstnem redu kot so bili ustvarjeni!!!!\n";
-    return 0;
-}
-#endif
-
-
-#ifdef DESTRUKTOR_DINAMICNI_POMNILNIK_10
-class Primer {
-private:
-    int* a;
-
-public:
-    Primer() {
-        a = new int[5];
-        // cout << "Pomnilnik alociran\n";
-    }
-
-    ~Primer() {
-        delete[] a;
-        // cout << "Pomnilnik sproscen\n";
-    }
-};
-
-void Funkcija_ki_nbe_sprosca_pomnilnika() {
-    Primer p[100000];
-}
-
-int main() {
-    Primer p;
-
-    for (size_t i = 0; i < 100000; i++)
-    {
-		cout << i << "\n";
-        Funkcija_ki_nbe_sprosca_pomnilnika();
-    }
-
-	cout << "uporabljamo p\n";
-
-    cout << "Konec programa\n";
-    return 0;
-}
-#endif
-
-
-#ifdef GETTER_SETTER_10
-class Student {
-private:
-    string ime;
-    int starost;
-
-public:
-    // privzeti konstruktor
-    Student() {
-        ime = "Neznano";
-        starost = 0;
-    }
-
-    // konstruktor s parametri
-    Student(string i, int s) {
-        ime = i;
-        setStarost(s);
-    }
-
-    // setter
-    void setStarost(int s) {
-		starost = (s >= 0) ? s : 0;
-    }
-
-    // getter
-    int getStarost() {
-        return starost;
-    }
-
-    void izpisi() {
-        cout << ime << " (" << starost << " let)" << endl;
-    }
-};
-
-int main() {
-    Student a;
-    Student b("Ana", 20);
-    Student c("Marko", -5); // starost bo 0
-
-    a.izpisi();
-    b.izpisi();
-    c.izpisi();
-
-    return 0;
-}
-
-#endif
-
-
-#ifdef POLJE_OBJEKTOV_10
-class Student {
-private:
-    string ime;
-    int starost;
-
-public:
-    Student() {
-        ime = "Neznano";
-        starost = 0;
-    }
-
-    Student(string i, int s) {
-        ime = i;
-        starost = s;
-    }
-
-    void izpisi() {
-        cout << ime << " (" << starost << " let)" << endl;
-    }
-};
-
-int main() {
-    Student razred[3];
-
-    razred[0] = Student("Ana", 20);
-    razred[1] = Student("Marko", 21);
-    razred[2] = Student("Luka", 22);
-
-    for (int i = 0; i < 3; i++) {
-        razred[i].izpisi();
-    }
-
-    return 0;
-}
-#endif
-
-
-#ifdef DINAMICNO_POLJE_OBJEKTOV_10
-class Student {
-private:
-    string ime;
-    int starost;
-
-public:
-    Student() {
-        ime = "Neznano";
-        starost = 0;
-    }
-
-    void nastavi(string i, int s) {
-        ime = i;
-        starost = s;
-    }
-
-    void izpisi() {
-        cout << ime << " (" << starost << " let)" << endl;
-    }
-};
-
-int main() {
-    int n;
-    cout << "Koliko studentov? ";
-    cin >> n;
-
-    Student* razred = new Student[n];
-
+// -------------------- FUNKCIJE ZA TABELO STRUKTUR --------------------
+void vnesiStudente(Student razred[], int n) {
     for (int i = 0; i < n; i++) {
-        string ime;
-        int starost;
-
+        cout << "\nStudent " << (i + 1) << ":\n";
         cout << "Ime: ";
-        cin >> ime;
-        cout << "Starost: ";
-        cin >> starost;
+        cin >> razred[i].ime;
 
-        razred[i].nastavi(ime, starost);
+        cout << "Vnesi " << ST_OCEN << " ocen: ";
+        for (int j = 0; j < ST_OCEN; j++)
+            cin >> razred[i].ocene[j];
     }
+}
 
-    cout << "\n--- IZPIS ---\n";
+void izpisiRazred(const Student razred[], int n) {
+    cout << "\n--- IZPIS RAZREDA ---\n";
     for (int i = 0; i < n; i++) {
-        razred[i].izpisi();
+        cout << "\n[" << (i + 1) << "]\n";
+        izpisiStudenta(razred[i]);
+        cout << "Povprecje: " << povprecjeStudenta(razred[i]) << endl;
     }
-
-    delete[] razred;
-    return 0;
 }
 
-#endif
+int indeksNajboljsega(const Student razred[], int n) {
+    int best = 0;
+    double bestAvg = povprecjeStudenta(razred[0]);
 
-#ifdef DEDOVANJE_10
-class Oseba {
-protected:
-    string ime;
-    int starost;
-
-public:
-    Oseba(string i, int s) {
-        ime = i;
-        starost = s;
-    }
-
-    void izpisi() {
-        cout << ime << " (" << starost << " let)" << endl;
-    }
-};
-
-class Student : public Oseba {
-private:
-    int letnik;
-
-public:
-    Student(string i, int s, int l)
-        : Oseba(i, s) 
-    {
-        letnik = l;
-    }
-
-    void izpisi() {
-        Oseba::izpisi();
-        cout << "Ime: " << ime << endl;
-        cout << "Letnik: " << letnik << endl;
-    }
-};
-
-int main()
-{
-    Oseba o("Ana", 20);
-    Student s("Marko", 21, 2);
-    o.izpisi();
-    cout << "-----------------" << endl;
-    s.izpisi();
-    return 0;
-}
-#endif
-
-#ifdef POLIMORFIZEM_10
-class Oseba {
-public:
-    void izpisi() {
-        cout << "Sem oseba" << endl;
-    }
-};
-
-class Student : public Oseba {
-public:
-    void izpisi() {
-        cout << "Sem student" << endl;
-    }
-};
-
-
-int main()
-{
-    Oseba o1;
-	o1.izpisi();   // izpiše: "Sem oseba"
-
-	Student s1;
-	s1.izpisi();   // izpiše: "Sem student"
-
-    Oseba* o2 = new Oseba();
-	o2->izpisi();   // izpiše: "Sem oseba"
-
-	Student* s2 = new Student();
-	s2->izpisi();   // izpiše: "Sem student"
-
-    Oseba* os1 = new Student();
-	os1->izpisi();   // izpiše: "Sem oseba" <--- !!!!!
-
-    return 0;
-}
-#endif
-
-#ifdef POLIMORFIZEM_20
-class Oseba {
-public:
-	virtual void izpisi() {                 // <-- dodana ključna beseda virtual
-        cout << "Sem oseba" << endl;
-    }
-};
-
-class Student : public Oseba {
-public:
-    void izpisi() {
-        cout << "Sem student" << endl;
-    }
-};
-
-
-int main()
-{
-    Oseba o1;
-    o1.izpisi();   // izpiše: "Sem oseba"
-
-    Student s1;
-    s1.izpisi();   // izpiše: "Sem student"
-
-    Oseba* o2 = new Oseba();
-    o2->izpisi();   // izpiše: "Sem oseba"
-
-    Student* s2 = new Student();
-    s2->izpisi();   // izpiše: "Sem student"
-
-    Oseba* os1 = new Student();
-    os1->izpisi();   // izpiše: "Sem student" <--- !!!!!
-
-    return 0;
-}
-#endif
-
-#ifdef POLIMORFIZEM_30
-class Oseba {
-public:
-    virtual void izpisi() {
-        cout << "Sem oseba" << endl;
-    }
-};
-
-class Student : public Oseba {
-public:
-    void izpisi() override {
-        cout << "Sem student" << endl;
-    }
-};
-
-class Profesor : public Oseba {
-public:
-    void izpisi() override {
-        cout << "Sem profesor" << endl;
-    }
-};
-
-int main() {
-    Oseba* seznam[3];
-    seznam[0] = new Student();
-    seznam[1] = new Profesor();
-    seznam[2] = new Oseba();
-
-    for (int i = 0; i < 3; i++) {
-        seznam[i]->izpisi();
-    }
-
-    // počistimo pomnilnik
-    for (int i = 0; i < 3; i++)
-        delete seznam[i];
-
-    return 0;
-}
-
-#endif
-
-
-#ifdef ABSTRAKTNI_RAZRED_10
-class Oseba {
-public:
-    virtual void izpisi() = 0;
-
-    void naslov() {
-        cout << "To je naslov Osebe" << endl;
-    }
-};
-
-class Hisnik : public Oseba {
-protected:
-    string zadlozitev;
-};
-
-class Student : public Oseba {
-public:
-    void izpisi() override {
-        cout << "Sem student" << endl;
-    }
-};
-
-class Profesor : public Oseba {
-public:
-    void izpisi() override {
-        cout << "Sem profesor" << endl;
-    }
-};
-
-int main() {
-    Oseba* seznam[3];
-    seznam[0] = new Student();
-    seznam[1] = new Profesor();
-    seznam[2] = new Student();
-
-    for (int i = 0; i < 3; i++) {
-        seznam[i]->izpisi();
-    }
-
-    // počistimo pomnilnik
-    for (int i = 0; i < 3; i++)
-        delete seznam[i];
-
-    return 0;
-}
-
-#endif
-
-#ifdef ABSTRAKTNI_RAZRED_20
-class Oseba {
-protected:
-    string ime;
-
-public:
-    Oseba(string i) : ime(i) {}
-
-    virtual void izpisi() = 0;
-
-    void pozdrav() {
-        cout << "Pozdravljen, " << ime << endl;
-    }
-
-    virtual ~Oseba() {}
-};
-
-class Student : public Oseba {
-public:
-    Student(string i = "") : Oseba(i) {}
-
-    void izpisi() override {
-        cout << "Sem student" << endl;
-    }
-};
-
-class Profesor : public Oseba {
-public:
-    Profesor(string i = "") : Oseba(i) {}
-
-    void izpisi() override {
-        cout << "Sem profesor" << endl;
-    }
-};
-
-int main() {
-    Oseba* seznam[2];
-    seznam[0] = new Student();
-    seznam[1] = new Profesor();
-    //seznam[2] = new Oseba();
-
-    for (int i = 0; i < 2; i++) {
-        seznam[i]->izpisi();
-    }
-
-    // počistimo pomnilnik
-    for (int i = 0; i < 2; i++)
-        delete seznam[i];
-
-    return 0;
-}
-
-#endif
-
-#ifdef BANCNI_RACUN_10
-
-class BancniRacun {
-private:
-    double stanje;
-
-public:
-    BancniRacun(double zacetno) {
-        stanje = zacetno;
-    }
-
-    void polog(double znesek) {
-        if (znesek > 0)
-            stanje += znesek;
-    }
-
-    bool dvig(double znesek) {
-        if (znesek <= stanje) {
-            stanje -= znesek;
-            return true;
+    for (int i = 1; i < n; i++) {
+        double avg = povprecjeStudenta(razred[i]);
+        if (avg > bestAvg) {
+            bestAvg = avg;
+            best = i;
         }
+    }
+    return best;
+}
+
+double povprecjeRazreda(const Student razred[], int n) {
+    double sum = 0;
+    for (int i = 0; i < n; i++)
+        sum += povprecjeStudenta(razred[i]);
+    return sum / n;
+}
+
+void dodajBonusVsem(Student razred[], int n, int bonus) {
+    for (int i = 0; i < n; i++)
+        dodajBonus(razred[i], bonus);
+}
+
+// -------------------- MAIN --------------------
+int main() {
+    cout << "=== DEMO: STRUKTURE + POLJA + FUNKCIJE ===\n";
+
+    // 1) Demo: funkcija vrne strukturo
+    Student demo = ustvariStudentaDemo();
+    cout << "\nDEMO student (ustvarjen v funkciji):\n";
+    izpisiStudenta(demo);
+    cout << "Povprecje demo studenta: " << povprecjeStudenta(demo) << endl;
+
+    // 2) Dodamo bonus demo studentu (referenca)
+    dodajBonus(demo, 1);
+    cout << "\nDEMO po bonu (+1):\n";
+    izpisiStudenta(demo);
+    cout << "Novo povprecje: " << povprecjeStudenta(demo) << endl;
+
+    // 3) Logično nadaljevanje: tabela struktur (razred)
+    const int N = 3;
+    Student razred[N];
+
+    cout << "\n\n=== VNESI PODATKE ZA " << N << " STUDENTE ===\n";
+    vnesiStudente(razred, N);
+
+    // 4) Izpis razreda
+    izpisiRazred(razred, N);
+
+    // 5) Najboljši študent
+    int best = indeksNajboljsega(razred, N);
+    cout << "\n--- NAJBOLJSI STUDENT ---\n";
+    izpisiStudenta(razred[best]);
+    cout << "Povprecje: " << povprecjeStudenta(razred[best]) << endl;
+
+    // 6) Povprečje razreda
+    cout << "\nPovprecje razreda: " << povprecjeRazreda(razred, N) << endl;
+
+    // 7) Bonus vsem
+    cout << "\nDodajam bonus +1 vsem studentom...\n";
+    dodajBonusVsem(razred, N, 1);
+
+    // 8) Ponovni izpis
+    izpisiRazred(razred, N);
+
+    return 0;
+}
+
+#endif
+
+#ifdef FUNKCIJE_3
+
+int sestej(int a, int b) {
+    return a + b;
+}
+
+/* NE GRE - morajo se razlikovati v argumentih */
+/*
+float sestej(int a, int b) {
+    return a + b;
+}
+*/
+
+double sestej(double a, double b) {
+    return a + b;
+}
+
+float sestej(float a, float b) {
+    return a + b;
+}
+
+int main() {
+    int int1 = 5, int2 = 10;
+    double double1 = 5.5, double2 = 10.2;
+    float float1 = 3.3f, float2 = 4.4f;
+
+    cout << "Sestevek int: " << sestej(int1, int2) << endl;
+    cout << "Sestevek double: " << sestej(double1, double2) << endl;
+    cout << "Sestevek float: " << sestej(float1, float2) << endl;
+
+    auto result = sestej(12, 55);
+
+    return 0;
+}
+
+#endif
+
+#ifdef REKURZIVNE_FUNKCIJE_1
+void odstevaj(int n) {
+    if (n == 0)          // osnovni primer
+        return;
+
+    cout << n << endl;
+    odstevaj(n - 1);     // rekurzivni klic
+}
+
+
+int main() {
+    int stevilo;
+    cout << "Vnesi stevilo: ";
+    cin >> stevilo;
+
+    cout << "Odstevanje od " << stevilo << " do 1:\n";
+    odstevaj(stevilo);
+    return 0;
+}
+
+#endif
+
+
+#ifdef REKURZIVNE_FUNKCIJE_2
+
+// n! = n * (n-1) * (n-2) * ... * 1
+// 
+// 0! = 1
+// Rekurzivno: n! = n * (n-1)!
+//
+// Rekurzivna funkcija za izračun fakultete: f(n) = n * f(n-1)
+
+int fakulteta(int n) {
+    if (n == 0)
+        return 1;               // osnovni primer
+
+    return n * fakulteta(n - 1);
+}
+
+int main() {
+    int stevilo;
+    cout << "Vnesi stevilo: ";
+    cin >> stevilo;
+
+    cout << stevilo << "! = " << fakulteta(stevilo) << endl;
+
+    return 0;
+}
+
+#endif
+
+#ifdef REKURZIVNE_FUNKCIJE_3
+
+bool palindrom(const string& s, int zacetek, int konec) {
+    if (zacetek >= konec)
+        return true;
+
+    if (s[zacetek] != s[konec])
         return false;
-    }
 
-    double getStanje() {
-        return stanje;
-    }
-};
-
-int main() {
-    BancniRacun racun(100.0);
-
-    racun.polog(50);
-    racun.dvig(30);
-
-    cout << "Stanje: " << racun.getStanje() << endl;
-}
-#endif
-
-#ifdef GEOMETRIJSKI_LIKI_10
-
-class GeometrijskiLik {
-protected:
-    string opis;
-
-public:
-    GeometrijskiLik(string o) {
-        opis = o;
-    }
-
-    string dobiOpis() { return opis; }
-
-    virtual double povrsina() = 0;
-    virtual double obseg() = 0;
-    virtual ~GeometrijskiLik() {}
-};
-
-class Krog : public GeometrijskiLik {
-private:
-    double polmer;
-
-public:
-    Krog(double r) : GeometrijskiLik("KROG"), polmer(r) {}
-
-    double povrsina() override {
-        return 3.14159 * polmer * polmer;
-    }
-
-    double obseg() override {
-        return 2 * 3.14159 * polmer;
-    }
-};
-
-class Pravokotnik : public GeometrijskiLik {
-private:
-    double sirina, visina;
-
-public:
-    Pravokotnik(double sirina, double visina) 
-        : GeometrijskiLik("PRAVOKOTNIK"), sirina(sirina), visina(visina) {}
-
-    double povrsina() override {
-        return sirina * visina;
-    }
-
-    double obseg() override {
-        return 2 * (sirina + visina);
-    }
-};
-
-
-class Trikotnik : public GeometrijskiLik {
-private:
-    double osnova, visina;
-
-public:
-    Trikotnik(double osnova, double visina)
-        : GeometrijskiLik("TRIKOTNIK"), osnova(osnova), visina(visina) {
-    }
-
-    double povrsina() override {
-        return osnova * visina / 2;
-    }
-
-    double obseg() override {
-        return osnova + 2 * visina;     // ni matematično pravilno
-    }
-};
-
-int main() {
-    const int velikost = 5;
-
-    GeometrijskiLik* oblike[velikost];
-    oblike[0] = new Krog(5);
-    oblike[1] = new Pravokotnik(4, 6);
-    oblike[2] = new Krog(10);
-    oblike[3] = new Trikotnik(12, 4);
-    oblike[4] = new Krog(5);
-
-    for (int i = 0; i < velikost; i++) {
-        cout << endl << "--------------------------";
-        cout << "#: " << i << endl;
-        cout << "Lik: " << oblike[i]->dobiOpis() << endl;
-        cout << "Ploščina: " << oblike[i]->povrsina() << endl;
-        cout << "Obseg: " << oblike[i]->obseg() << endl;
-    }
-
-    for (int i = 0; i < 2; i++)
-        delete oblike[i];
+    return palindrom(s, zacetek + 1, konec - 1);
 }
 
-#endif
+bool palindrom_nerekurzivno(const string& s, int zacetek, int konec) {
+    while (zacetek < konec) {
+        if (s[zacetek] != s[konec])
+            return false;
 
-#ifdef ZAPOSLENI_10
-
-enum TipZaposlitve {
-    REDNO,
-    STUDENTSKO
-};
-
-class Zaposleni {
-protected:
-    string ime;
-
-public:
-    Zaposleni(string ime) : ime(ime) {}
-    virtual double placa() = 0;
-    virtual void izpisi() = 0;
-    virtual ~Zaposleni() {}
-};
-
-class RednoZaposleni : public Zaposleni {
-private:
-    double mesecnaPlaca;
-
-public:
-    RednoZaposleni(string ime, double placa)
-        : Zaposleni(ime), mesecnaPlaca(placa) {
+        zacetek++;
+        konec--;
     }
 
-    double dobiMesecnoPlaco() {
-        return mesecnaPlaca;
+    return true;
+}
+
+bool palindrom_nerekurzivno1(const string& s, int zacetek, int konec) {
+    const char* k_zacetek = &s[zacetek];
+    const char* k_konec = &s[konec];
+
+    while (k_zacetek < k_konec) {
+        if (*k_zacetek != *k_konec)
+            return false;
+
+        k_zacetek++;
+        k_konec--;
     }
 
-    double placa() override {
-        return mesecnaPlaca;
-    }
-
-    void izpisi() override {
-        cout << ime << " (redno): " << placa() << endl;
-    }
-};
-
-class StudentskoDelo : public Zaposleni {
-private:
-    int ure;
-    double urnaPostavka;
-
-public:
-    StudentskoDelo(string ime, int ure, double urna)
-        : Zaposleni(ime), ure(ure), urnaPostavka(urna) {
-    }
-
-    double placa() override {
-        return ure * urnaPostavka;
-    }
-
-    void izpisi() override {
-        cout << ime << " (student): " << placa() << endl;
-    }
-};
-
-class Legenda : public RednoZaposleni {
-private:
-    int delovnaDoba;
-
-public:
-    Legenda(string ime, double placa, int delovnaDoba)
-        : RednoZaposleni(ime, placa), delovnaDoba(delovnaDoba) {
-    }
-
-    double placa() override {
-        return dobiMesecnoPlaco() * (1 + (double)(delovnaDoba / 100.0));
-    }
-
-    void izpisi() override {
-        cout << ime << " (legenda): " << placa() << endl;
-    }
-};
+    return true;
+}
 
 int main() {
-    Zaposleni* seznam[3];
-    seznam[0] = new RednoZaposleni("Ana", 2000);
-    seznam[1] = new StudentskoDelo("Luka", 80, 7.5);
-    seznam[2] = new Legenda("Miha", 2000, 20);
+    string s = "ana";
+    cout << palindrom(s, 0, s.length() - 1) << endl;
 
-    for (int i = 0; i < 3; i++)
-        seznam[i]->izpisi();
+    cout << "-------------------------------" << endl;
 
-    for (int i = 0; i < 2; i++)
-        delete seznam[i];
+    do {
+        string s1;
+        cout << "Vnesi niz ali prazno za konec : ";
+        getline(cin, s1);
+
+        if (s1.empty())
+            break;
+
+        if (palindrom(s1, 0, s1.length() - 1))
+            cout << "Niz je palindrom." << endl;
+        else
+            cout << "Niz ni palindrom." << endl;
+
+        if (palindrom_nerekurzivno(s1, 0, s1.length() - 1))
+            cout << "Niz je palindrom." << endl;
+        else
+            cout << "Niz ni palindrom." << endl;
+
+        if (palindrom_nerekurzivno1(s1, 0, s1.length() - 1))
+            cout << "Niz je palindrom." << endl;
+        else
+            cout << "Niz ni palindrom." << endl;
+    } while (true);
+
+    return 0;
 }
 
 #endif

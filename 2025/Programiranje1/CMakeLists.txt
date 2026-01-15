@@ -12,7 +12,7 @@ endif()
 project ("128Nalog")
 
 # Add source to this project's executable.
-add_executable (128Nalog "128Nalog.cpp" "srecanje2.cpp" "srecanje3.cpp" "srecanje4.cpp" "srecanje5.cpp" "SistemNarocil.cpp")
+add_executable (128Nalog "128Nalog.cpp" "srecanje2.cpp" "srecanje3.cpp" "srecanje4.cpp" "srecanje5.cpp"  "srecanje4.cpp" "srecanje6.cpp")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET 128Nalog PROPERTY CXX_STANDARD 20)
