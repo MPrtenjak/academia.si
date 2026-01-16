@@ -1,11 +1,10 @@
-﻿#include <iostream>
+﻿#include "constants.h"
+#include <iostream>
 #include <limits>
 #include <iomanip>
 #include <string>
 #include <vector>
 using namespace std;
-
-#define ZAPOSLENI_10x
 
 #ifdef OOP_10
 struct Student {

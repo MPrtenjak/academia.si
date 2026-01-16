@@ -1,9 +1,8 @@
-﻿#include <iostream>
+﻿#include "constants.h"
+#include <iostream>
 #include <limits>
 #include <iomanip>
 using namespace std;
-
-#define funkcije_x
 
 #ifdef S2_1
 int main() {

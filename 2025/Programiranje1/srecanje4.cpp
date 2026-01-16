@@ -1,11 +1,10 @@
-﻿#include <iostream>
+﻿#include "constants.h"
+#include <iostream>
 #include <limits>
 #include <iomanip>
 #include <string>
 #include <vector>
 using namespace std;
-
-#define REFERENCE_1x
 
 #ifdef REFERENCE_1
 int main() {

@@ -12,7 +12,7 @@ endif()
 project ("128Nalog")
 
 # Add source to this project's executable.
-add_executable (128Nalog "128Nalog.cpp" "srecanje2.cpp" "srecanje3.cpp" "srecanje4.cpp" "srecanje5.cpp"  "srecanje4.cpp" "srecanje6.cpp" "Primer1/AppException.h" "Primer1/AppException.cpp" "Primer1/FileOpenException.h" "Primer1/FileOpenException.cpp" "Primer1/CsvFormatException.h" "Primer1/CsvFormatException.cpp" "Primer1/InvalidFieldException.h" "Primer1/InvalidFieldException.cpp" "Primer1/Student.h" "Primer1/Student.cpp" "Primer1/CsvReader.h" "Primer1/CsvReader.cpp" "Primer1/main.cpp")
+add_executable (128Nalog "128Nalog.cpp" "srecanje2.cpp" "srecanje3.cpp" "srecanje4.cpp" "srecanje5.cpp"  "srecanje4.cpp" "srecanje6.cpp" "Primer1/AppException.h" "Primer1/AppException.cpp" "Primer1/FileOpenException.h" "Primer1/FileOpenException.cpp" "Primer1/CsvFormatException.h" "Primer1/CsvFormatException.cpp" "Primer1/InvalidFieldException.h" "Primer1/InvalidFieldException.cpp" "Primer1/Student.h" "Primer1/Student.cpp" "Primer1/CsvReader.h" "Primer1/CsvReader.cpp" "Primer1/main.cpp" "constants.h")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET 128Nalog PROPERTY CXX_STANDARD 20)

@@ -1,9 +1,7 @@
-
+#include "constants.h"
 #include <iostream>
 #include <cmath>
 using namespace std;
-
-#define E66_x
 
 #ifdef E7
 int main()

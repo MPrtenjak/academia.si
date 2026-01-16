@@ -1,4 +1,4 @@
-﻿#define PRIMER1
+﻿#include "../constants.h"
 
 #ifdef PRIMER1
 
