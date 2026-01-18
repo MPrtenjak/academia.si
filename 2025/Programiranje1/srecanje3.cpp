@@ -18,14 +18,14 @@ int main() {
 
     cout << "Stevila v polju a so :\n";
     for (int i = 0; i < 5; i++) {
-        cout "a[" << i << "] : " << a[i] << " ";
+        cout << "a[" << i << "] : " << a[i] << " " << endl;
     }
 
-	int b[5] = { 22, 5, 66, 7, 8, 33 };
+	int b[5] = { 22, 5, 66, 7, 8 };
 
     cout << "Stevila v polju b so :\n";
     for (int i = 0; i < 5; i++) {
-        cout "b[" << i << "] : " << b[i] << " ";
+        cout << "b[" << i << "] : " << b[i] << " " << endl;
     }
 
 
@@ -33,7 +33,7 @@ int main() {
 
     cout << "Stevila v polju b so :\n";
     for (int i = 0; i < 5; i++) {
-        cout "c[" << i << "] : " << c[i] << " ";
+        cout << "c[" << i << "] : " << c[i] << " " << endl;
     }
 
     return 0;
