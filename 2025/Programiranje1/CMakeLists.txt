@@ -1,21 +1,36 @@
-﻿# CMakeList.txt : CMake project for 128Nalog, include source and define
-# project specific logic here.
-#
-cmake_minimum_required (VERSION 3.10)
+cmake_minimum_required(VERSION 3.16)
 
-# Enable Hot Reload for MSVC compilers if supported.
-if (POLICY CMP0141)
-  cmake_policy(SET CMP0141 NEW)
-  set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
-endif()
+project(Programiranje1 LANGUAGES CXX)
 
-project ("128Nalog")
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Add source to this project's executable.
-add_executable (128Nalog "128Nalog.cpp" "srecanje2.cpp" "srecanje3.cpp" "srecanje4.cpp" "srecanje5.cpp"  "srecanje4.cpp" "srecanje6.cpp" "Primer1/AppException.h" "Primer1/AppException.cpp" "Primer1/FileOpenException.h" "Primer1/FileOpenException.cpp" "Primer1/CsvFormatException.h" "Primer1/CsvFormatException.cpp" "Primer1/InvalidFieldException.h" "Primer1/InvalidFieldException.cpp" "Primer1/Student.h" "Primer1/Student.cpp" "Primer1/CsvReader.h" "Primer1/CsvReader.cpp" "Primer1/main.cpp" "constants.h" "srecanje7.cpp")
+add_executable(Programiranje1 
+    "128Nalog.cpp"
+	"constants.h"
+	"srecanje2.cpp"
+	"srecanje3.cpp"
+	"srecanje4.cpp"
+	"srecanje5.cpp"
+	"srecanje6.cpp"
+	"srecanje7.cpp"
+	"Primer1/AppException.h" 
+	"Primer1/AppException.cpp" 
+	"Primer1/FileOpenException.h" 
+	"Primer1/FileOpenException.cpp" 
+	"Primer1/CsvFormatException.h" 
+	"Primer1/CsvFormatException.cpp" 
+	"Primer1/InvalidFieldException.h" 
+	"Primer1/InvalidFieldException.cpp" 
+	"Primer1/Student.h" 
+	"Primer1/Student.cpp" 
+	"Primer1/CsvReader.h" 
+	"Primer1/CsvReader.cpp" 
+	"Primer1/main.cpp"
+)
 
-if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET 128Nalog PROPERTY CXX_STANDARD 20)
-endif()
-
-# TODO: Add tests and install targets if needed.
+include(GNUInstallDirs)
+install(TARGETS Programiranje1
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
