@@ -11,6 +11,7 @@
 #include <stack>
 #include <queue>
 #include <map>
+#include <algorithm> 
 using namespace std;
 
 #ifdef PODATKOVNE_STRUKTURE_10
@@ -447,6 +448,560 @@ int main() {
     std::vector<int>::iterator novKonec = std::remove_if(v.begin(), v.end(), jeSodo);
     v.erase(novKonec, v.end());
     izpisiVektor(v, "\nPo remove_if+erase (odstranjeni sodi):");
+
+    return 0;
+}
+
+#endif
+
+#ifdef PODATKOVNE_STRUKTURE_ARRAY_10
+
+// 1) Najbolj tipičen primer: fiksna velikost je znana vnaprej
+//    -> std::array je “prava” tabela (brez dinamične alokacije), velikost je del tipa.
+double povprecje3(const std::array<int, 3>& meritve) {
+    int vsota = 0;
+    std::size_t i;
+    for (i = 0; i < meritve.size(); ++i) {
+        vsota += meritve[i];
+    }
+    return vsota / (double)meritve.size();
+}
+
+// 2) Tipičen primer: lookup tabela (fiksno število elementov)
+//    -> npr. dnevi v tednu ali število dni v mesecu.
+int dneviVMesecu(int mesec) {
+    // mesec: 1..12
+    static const std::array<int, 12> dni = { {31,28,31,30,31,30,31,31,30,31,30,31} };
+    if (mesec < 1 || mesec > 12) return -1;
+    return dni[(std::size_t)(mesec - 1)];
+}
+
+// 3) Tipičen primer: fiksni “buffer” (npr. branje kosov podatkov)
+//    -> pokaže, da je velikost stalna in se ne spreminja.
+void obdelajVBlokih(const int* podatki, int n) {
+    std::array<int, 4> blok; // vedno obdelujemo po 4 elemente
+    int i = 0;
+
+    while (i < n) {
+        // napolni blok (manjkajoče napolni z 0)
+        int j;
+        for (j = 0; j < (int)blok.size(); ++j) {
+            if (i + j < n) blok[(std::size_t)j] = podatki[i + j];
+            else blok[(std::size_t)j] = 0;
+        }
+
+        // “obdelava” bloka: samo izpis in vsota
+        int vsota = 0;
+        std::cout << "Blok: ";
+        for (j = 0; j < (int)blok.size(); ++j) {
+            std::cout << blok[(std::size_t)j] << " ";
+            vsota += blok[(std::size_t)j];
+        }
+        std::cout << " | vsota=" << vsota << "\n";
+
+        i += (int)blok.size();
+    }
+}
+
+int main() {
+    std::cout << "Primeri, kdaj je std::array dobra izbira\n\n";
+
+    // Case 1: fiksno število meritev (npr. 3 meritve senzorja)
+    std::array<int, 3> senzor = { {12, 15, 14} };
+    std::cout << "1) Povprecje 3 meritev: " << povprecje3(senzor) << "\n\n";
+
+    // Case 2: lookup tabela (dni v mesecu)
+    std::cout << "2) Dnevi v februarju: " << dneviVMesecu(2) << "\n";
+    std::cout << "   Dnevi v oktobru:   " << dneviVMesecu(10) << "\n\n";
+
+    // Case 3: fiksni buffer za obdelavo po blokih
+    int podatki[] = { 5, 8, 13, 21, 34, 55, 89 };
+    int n = (int)(sizeof(podatki) / sizeof(podatki[0]));
+    std::cout << "3) Obdelava po blokih (velikost bloka je fiksna):\n";
+    obdelajVBlokih(podatki, n);
+
+    return 0;
+}
+
+#endif
+
+#ifdef PODATKOVNE_STRUKTURE_VECTOR_10
+
+// 1) Tipičen primer: število elementov ni znano vnaprej (dinamična rast)
+void primerDinamicnaRast() {
+    std::cout << "=== 1) Dinamicna rast (neznano stevilo elementov) ===\n";
+
+    std::vector<int> v;
+    int x;
+
+    std::cout << "Vnesi nekaj celih stevil (0 konca vnos):\n";
+    while (true) {
+        std::cout << "> ";
+        if (!(std::cin >> x)) {
+            std::cout << "Napaka pri branju.\n";
+            return;
+        }
+        if (x == 0) break;
+        v.push_back(x);
+    }
+
+    std::cout << "Vnesel si " << v.size() << " stevil:\n";
+    std::size_t i;
+    for (i = 0; i < v.size(); ++i) {
+        std::cout << "  v[" << i << "] = " << v[i] << "\n";
+    }
+    std::cout << "\n";
+}
+
+// 2) Tipičen primer: delo z algoritmi + iteriranje (sort, filter)
+//    (vector je idealen za std::sort, ker ima naključni dostop)
+void primerSortInFilter() {
+    std::cout << "=== 2) Sort + filter (STL algoritmi) ===\n";
+
+    std::vector<int> v;
+    v.push_back(7);
+    v.push_back(2);
+    v.push_back(9);
+    v.push_back(2);
+    v.push_back(6);
+    v.push_back(1);
+
+    std::cout << "Zacetno:\n";
+    std::size_t i;
+    for (i = 0; i < v.size(); ++i) std::cout << "  " << v[i] << "\n";
+
+    std::sort(v.begin(), v.end());
+
+    std::cout << "Po std::sort:\n";
+    for (i = 0; i < v.size(); ++i) std::cout << "  " << v[i] << "\n";
+
+    // Filter: samo elementi >= 5
+    std::vector<int> filtrirano;
+    for (i = 0; i < v.size(); ++i) {
+        if (v[i] >= 5) filtrirano.push_back(v[i]);
+    }
+
+    std::cout << "Filtrirano (>=5):\n";
+    for (i = 0; i < filtrirano.size(); ++i) std::cout << "  " << filtrirano[i] << "\n";
+    std::cout << "\n";
+}
+
+// 3) Tipičen primer: “tabela” objektov (npr. zapisi) + iskanje po podatkih
+struct Student {
+    std::string ime;
+    int ocena;
+};
+
+int najdiStudenta(const std::vector<Student>& studenti, const std::string& ime) {
+    std::size_t i;
+    for (i = 0; i < studenti.size(); ++i) {
+        if (studenti[i].ime == ime) return (int)i;
+    }
+    return -1;
+}
+
+void primerSeznamObjektov() {
+    std::cout << "=== 3) Seznam objektov (vector kot privzeti seznam) ===\n";
+
+    std::vector<Student> studenti;
+    Student s;
+
+    s.ime = "Ana";   s.ocena = 9;  studenti.push_back(s);
+    s.ime = "Boris"; s.ocena = 8;  studenti.push_back(s);
+    s.ime = "Cene";  s.ocena = 6;  studenti.push_back(s);
+
+    std::cout << "Studenti:\n";
+    std::size_t i;
+    for (i = 0; i < studenti.size(); ++i) {
+        std::cout << "  " << studenti[i].ime << " -> " << studenti[i].ocena << "\n";
+    }
+
+    std::string iskano = "Boris";
+    int idx = najdiStudenta(studenti, iskano);
+    if (idx >= 0) {
+        std::cout << "Najden '" << iskano << "' na indeksu " << idx
+            << ", ocena=" << studenti[(std::size_t)idx].ocena << "\n";
+    }
+    else {
+        std::cout << "Student '" << iskano << "' ni najden.\n";
+    }
+
+    std::cout << "\n";
+}
+
+int main() {
+    std::cout << "Primeri, kdaj je std::vector dobra izbira\n\n";
+
+    primerDinamicnaRast();   // vnos uporabnika, neznana velikost
+    primerSortInFilter();    // algoritmi + sort
+    primerSeznamObjektov();  // seznam zapisov/objektov
+
+    return 0;
+}
+
+#endif
+
+#ifdef PODATKOVNE_STRUKTURE_STACK_10
+
+// 1) Tipičen primer: razveljavljanje (UNDO) - LIFO
+void primerUndo() {
+    std::cout << "=== 1) UNDO zgodovina (LIFO) ===\n";
+
+    std::stack<std::string> undo;
+
+    // Uporabnik "naredi" nekaj korakov (push)
+    undo.push("Vpisal: Pozdravljen");
+    undo.push("Vpisal: Pozdravljen, svet");
+    undo.push("Izbrisal: svet");
+    undo.push("Vpisal: C++");
+
+    std::cout << "Zgodovina dejanj (zadnje je na vrhu):\n";
+    std::cout << "Zdaj razveljavljam:\n";
+
+    // Razveljavljanje gre v obratnem vrstnem redu (pop)
+    while (!undo.empty()) {
+        std::cout << "  undo -> " << undo.top() << "\n";
+        undo.pop();
+    }
+
+    std::cout << "\n";
+}
+
+// 2) Tipičen primer: preverjanje pravilnih oklepajev ((), [], {})
+//    Ideja: ob odprtem oklepaju push, ob zaprtem preveri top in pop.
+bool jeOdprtiOklepaj(char c) {
+    return (c == '(') || (c == '[') || (c == '{');
+}
+
+bool seUjemata(char odprti, char zaprti) {
+    if (odprti == '(' && zaprti == ')') return true;
+    if (odprti == '[' && zaprti == ']') return true;
+    if (odprti == '{' && zaprti == '}') return true;
+    return false;
+}
+
+bool oklepajiPravilni(const std::string& s) {
+    std::stack<char> st;
+
+    std::size_t i;
+    for (i = 0; i < s.size(); ++i) {
+        char c = s[i];
+
+        if (jeOdprtiOklepaj(c)) {
+            st.push(c);
+        }
+        else if (c == ')' || c == ']' || c == '}') {
+            if (st.empty()) return false;           // ni para
+            if (!seUjemata(st.top(), c)) return false; // napačen par
+            st.pop();
+        }
+    }
+
+    return st.empty(); // če kaj ostane odprto, ni pravilno
+}
+
+void primerOklepaji() {
+    std::cout << "=== 2) Preverjanje oklepajev (LIFO) ===\n";
+
+    std::string a = "a*(b+c) - [d/{e+f}]";
+    std::string b = "a*(b+c]"; // napaka: ) in ] se ne ujemata
+
+    std::cout << "Niz: " << a << "\n";
+    std::cout << "  pravilni oklepaji? " << (oklepajiPravilni(a) ? "DA" : "NE") << "\n";
+
+    std::cout << "Niz: " << b << "\n";
+    std::cout << "  pravilni oklepaji? " << (oklepajiPravilni(b) ? "DA" : "NE") << "\n";
+
+    std::cout << "\n";
+}
+
+int main() {
+    std::cout << "Primeri, kdaj je std::stack dobra izbira\n\n";
+
+    primerUndo();       // LIFO: undo zgodovina
+    primerOklepaji();   // LIFO: preverjanje oklepajev
+
+    return 0;
+}
+
+#endif
+
+#ifdef PODATKOVNE_STRUKTURE_QUEUE_10
+
+// 1) Tipičen primer: čakalna vrsta opravil (FIFO)
+void primerOpravila() {
+    std::cout << "=== 1) Cakalna vrsta opravil (FIFO) ===\n";
+
+    std::queue<std::string> opravila;
+
+    // Opravila prihajajo v vrsto
+    opravila.push("Natisni racun");
+    opravila.push("Poslji e-mail");
+    opravila.push("Shrani porocilo");
+    opravila.push("Nalozi podatke");
+
+    int st = 1;
+    while (!opravila.empty()) {
+        std::cout << "  obdelujem #" << st << ": " << opravila.front() << "\n";
+        opravila.pop();
+        st++;
+    }
+
+    std::cout << "\n";
+}
+
+// 2) Tipičen primer: simulacija vrste strank (FIFO)
+struct Stranka {
+    std::string ime;
+    int cas; // koliko "sekund" traja obdelava
+};
+
+void primerStranke() {
+    std::cout << "=== 2) Vrsta strank (FIFO) ===\n";
+
+    std::queue<Stranka> vrsta;
+
+    Stranka s;
+    s.ime = "Ana";   s.cas = 3; vrsta.push(s);
+    s.ime = "Boris"; s.cas = 2; vrsta.push(s);
+    s.ime = "Cene";  s.cas = 4; vrsta.push(s);
+
+    int skupniCas = 0;
+
+    while (!vrsta.empty()) {
+        Stranka trenutna = vrsta.front();
+        vrsta.pop();
+
+        std::cout << "  obdelujem: " << trenutna.ime
+            << " (cas=" << trenutna.cas << ")\n";
+
+        skupniCas += trenutna.cas;
+        std::cout << "  skupni porabljeni cas do zdaj: " << skupniCas << "\n";
+    }
+
+    std::cout << "Skupni cas: " << skupniCas << "\n\n";
+}
+
+int main() {
+    std::cout << "Primeri, kdaj je std::queue dobra izbira\n\n";
+
+    primerOpravila(); // FIFO: opravila v vrstnem redu prihoda
+    primerStranke();  // FIFO: simulacija vrste strank
+
+    return 0;
+}
+
+#endif
+
+#ifdef PODATKOVNE_STRUKTURE_MAP_10
+
+// 1) Tipičen primer: slovar / imenik (kljuc -> vrednost) + hitro iskanje po kljucu
+void primerImenik() {
+    std::cout << "=== 1) Imenik (kljuc -> vrednost) ===\n";
+
+    // ključ: ime, vrednost: telefonska številka
+    std::map<std::string, std::string> imenik;
+
+    imenik["Ana"] = "040-111-222";
+    imenik["Boris"] = "031-333-444";
+    imenik["Cene"] = "051-555-666";
+
+    // iteriranje (map je urejen po ključu)
+    std::cout << "Vsi kontakti (urejeno po imenu):\n";
+    std::map<std::string, std::string>::const_iterator it;
+    for (it = imenik.begin(); it != imenik.end(); ++it) {
+        std::cout << "  " << it->first << " -> " << it->second << "\n";
+    }
+
+    // iskanje po ključu
+    std::cout << "Iskanje 'Boris':\n";
+    std::map<std::string, std::string>::iterator najden = imenik.find("Boris");
+    if (najden != imenik.end()) {
+        std::cout << "  najden: " << najden->first << " -> " << najden->second << "\n";
+    }
+    else {
+        std::cout << "  ni najden.\n";
+    }
+
+    std::cout << "\n";
+}
+
+// 2) Tipičen primer: frekvencna tabela (štetje pojavitev)
+//    map je super, ker freq[kljuc] privzeto ustvari element z 0, potem povečamo.
+void primerFrekvencaBesed() {
+    std::cout << "=== 2) Frekvencna tabela (stetje) ===\n";
+
+    std::string besede[] = { "macka", "pes", "macka", "ptica", "pes", "macka" };
+    int n = (int)(sizeof(besede) / sizeof(besede[0]));
+
+    std::map<std::string, int> freq;
+
+    int i;
+    for (i = 0; i < n; ++i) {
+        freq[besede[i]] = freq[besede[i]] + 1;
+    }
+
+    std::cout << "Frekvence (urejeno po kljucu):\n";
+    std::map<std::string, int>::const_iterator it;
+    for (it = freq.begin(); it != freq.end(); ++it) {
+        std::cout << "  " << it->first << " -> " << it->second << "\n";
+    }
+
+    std::cout << "\n";
+}
+
+// 3) Tipičen primer: podatki urejeni po ključu + iskanje po obmocju (range)
+//    To je glavna prednost map napram unordered_map: lahko dobiš vse v [od..do].
+void primerRangeIskanje() {
+    std::cout << "=== 3) Range iskanje (kljuci v obmocju) ===\n";
+
+    // ključ: leto, vrednost: opis dogodka
+    std::map<int, std::string> dogodki;
+    dogodki[2019] = "Vpis na fakulteto";
+    dogodki[2020] = "Prva sluzba";
+    dogodki[2022] = "Napredovanje";
+    dogodki[2024] = "Selitev";
+    dogodki[2025] = "Novi projekt";
+
+    int od = 2020;
+    int doVklj = 2024;
+
+    // lower_bound(od) -> prvi ključ >= od
+    // upper_bound(doVklj) -> prvi ključ > doVklj
+    std::map<int, std::string>::iterator zacetek = dogodki.lower_bound(od);
+    std::map<int, std::string>::iterator konec = dogodki.upper_bound(doVklj);
+
+    std::cout << "Dogodki v letih [" << od << ".." << doVklj << "]:\n";
+
+    std::map<int, std::string>::iterator it;
+    for (it = zacetek; it != konec; ++it) {
+        std::cout << "  " << it->first << " -> " << it->second << "\n";
+    }
+
+    std::cout << "\n";
+}
+
+int main() {
+    std::cout << "Primeri, kdaj je std::map dobra izbira\n\n";
+
+    primerImenik();           // kljuc -> vrednost + find
+    primerFrekvencaBesed();   // stetje pojavitev
+    primerRangeIskanje();     // range query po kljucih
+
+    return 0;
+}
+
+#endif
+
+#ifdef PODATKOVNE_STRUKTURE_ALGORITMI_10
+
+// ---------- pomožne funkcije ----------
+void izpisiInt(int x) {
+    std::cout << x << " ";
+}
+
+bool jeSodo(int x) {
+    return (x % 2) == 0;
+}
+
+int krat2(int x) {
+    return x * 2;
+}
+
+// For_each funkcija za map: sprejme par (key,value)
+void izpisiPar(const std::pair<const std::string, int>& p) {
+    std::cout << p.first << " -> " << p.second << "\n";
+}
+
+void izpisiVektor(const std::vector<int>& v, const std::string& naslov) {
+    std::cout << naslov << "\n";
+    std::for_each(v.begin(), v.end(), izpisiInt);
+    std::cout << "\n\n";
+}
+
+// ---------- demo ----------
+int main() {
+    std::cout << "STL algoritmi + kontejnerji (array/vector/map)\n\n";
+
+    // Izhodiščni podatki v std::array (fiksna velikost)
+    std::array<int, 10> a = { {7, 2, 9, 2, 6, 1, 8, 3, 2, 5} };
+
+    // -------------------------
+    // std::copy (array -> vector)
+    // -------------------------
+    std::vector<int> v;
+    v.resize(a.size()); // pripravimo prostor
+    std::copy(a.begin(), a.end(), v.begin());
+    izpisiVektor(v, "Po std::copy (array -> vector):");
+
+    // -------------------------
+    // std::sort (urejanje: vector ima naključni dostop)
+    // -------------------------
+    std::sort(v.begin(), v.end());
+    izpisiVektor(v, "Po std::sort (urejeno):");
+
+    // -------------------------
+    // std::find (prva pojavitev)
+    // -------------------------
+    std::vector<int>::iterator itNajden = std::find(v.begin(), v.end(), 6);
+    if (itNajden != v.end()) {
+        std::cout << "std::find: element 6 najden.\n\n";
+    }
+    else {
+        std::cout << "std::find: element 6 ni najden.\n\n";
+    }
+
+    // -------------------------
+    // std::count_if (štetje po pogoju)
+    // -------------------------
+    int stSodih = (int)std::count_if(v.begin(), v.end(), jeSodo);
+    std::cout << "std::count_if: stevilo sodih elementov = " << stSodih << "\n\n";
+
+    // (Opcijsko: std::count, štetje točne vrednosti)
+    int stDvojk = (int)std::count(v.begin(), v.end(), 2);
+    std::cout << "std::count: stevilo pojavitev vrednosti 2 = " << stDvojk << "\n\n";
+
+    // -------------------------
+    // std::for_each (izvede funkcijo nad vsakim elementom)
+    // (Tukaj ga uporabimo samo za izpis v eni vrstici.)
+    // -------------------------
+    std::cout << "std::for_each: izpis elementov:\n  ";
+    std::for_each(v.begin(), v.end(), izpisiInt);
+    std::cout << "\n\n";
+
+    // -------------------------
+    // std::transform (pretvori elemente)
+    // npr. vsak element *2 -> v nov vector
+    // -------------------------
+    std::vector<int> v2;
+    v2.resize(v.size());
+    std::transform(v.begin(), v.end(), v2.begin(), krat2);
+    izpisiVektor(v2, "std::transform (vsak element *2) -> nov vektor:");
+
+    // -------------------------
+    // std::remove_if + erase (dejanski izbris)
+    // odstranimo sode elemente iz v
+    // -------------------------
+    std::vector<int>::iterator novKonec = std::remove_if(v.begin(), v.end(), jeSodo);
+    v.erase(novKonec, v.end());
+    izpisiVektor(v, "std::remove_if + erase (odstranjeni sodi):");
+
+    // -------------------------
+    // std::map + frekvenčna tabela
+    // (Pokažemo še algoritem std::for_each na map)
+    // -------------------------
+    std::map<std::string, int> freq;
+    std::string besede[] = { "macka", "pes", "macka", "ptica", "pes", "macka" };
+    int n = (int)(sizeof(besede) / sizeof(besede[0]));
+
+    int i;
+    for (i = 0; i < n; ++i) {
+        freq[besede[i]] = freq[besede[i]] + 1;
+    }
+
+    std::cout << "std::map (frekvence besed) + std::for_each (izpis parov):\n";
+    std::for_each(freq.begin(), freq.end(), izpisiPar);
+    std::cout << "\n";
 
     return 0;
 }
