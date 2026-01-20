@@ -18,13 +18,13 @@ using namespace std;
 // ------------------------------------------------------------
 // Isti osnovni podatki za vse primere
 // ------------------------------------------------------------
-struct Record {
+struct Zapis {
     int id;
     std::string ime;
     int tocke;
 };
 
-static const std::array<Record, 6> skupniPodatki = { {
+static const std::array<Zapis, 6> skupniPodatki = { {
     {101, "Ana",   88},
     {102, "Boris", 92},
     {103, "Cene",  73},
@@ -34,7 +34,7 @@ static const std::array<Record, 6> skupniPodatki = { {
 } };
 
 // Pomožna funkcija: izpiše en zapis
-void izpisiRecord(const Record& r) {
+void izpisiZapis(const Zapis& r) {
     std::cout << "  id=" << r.id
         << ", ime=" << std::setw(5) << std::left << r.ime
         << ", tocke=" << std::setw(3) << std::right << r.tocke
@@ -55,7 +55,7 @@ void primerArray() {
 
     std::size_t i;
     for (i = 0; i < skupniPodatki.size(); ++i) {
-        izpisiRecord(skupniPodatki[i]);
+        izpisiZapis(skupniPodatki[i]);
         vsota += skupniPodatki[i].tocke;
     }
 
@@ -81,7 +81,7 @@ void primerArray() {
 
         int zvezdice;
         for (zvezdice = 0; zvezdice < predali[(std::size_t)p]; ++zvezdice) {
-            std::cout << '*';
+            std::cout << "###";
         }
         std::cout << " (" << predali[(std::size_t)p] << ")\n";
     }
@@ -96,27 +96,27 @@ void primerVector() {
     std::cout << "\n=== primerVector (std::vector) ===\n";
 
     // Isti podatki: kopiramo iz std::array v std::vector
-    std::vector<Record> v(skupniPodatki.begin(), skupniPodatki.end());
+    std::vector<Zapis> vektroVsehPodatkov(skupniPodatki.begin(), skupniPodatki.end());
 
     std::cout << "Isti podatki (filtriranje: tocke >= 85):\n";
-    std::vector<Record> dobri;
+    std::vector<Zapis> dobri;
 
     std::size_t i;
-    for (i = 0; i < v.size(); ++i) {
-        if (v[i].tocke >= 85) {
-            dobri.push_back(v[i]);
+    for (i = 0; i < vektroVsehPodatkov.size(); ++i) {
+        if (vektroVsehPodatkov[i].tocke >= 85) {
+            dobri.push_back(vektroVsehPodatkov[i]);
         }
     }
 
     for (i = 0; i < dobri.size(); ++i) {
-        izpisiRecord(dobri[i]);
+        izpisiZapis(dobri[i]);
     }
 
     // Podatki po meri: dinamična rast
     std::cout << "\nPodatki po meri (dinamicna rast z push_back):\n";
     std::vector<int> meritve;
 
-    int podatki[] = { 585, 769, 588, 120, 253, 637, 668, 540, 948, 456, 426, 113, 746, 281, 185, 606, 205, 533, 650, 664, 591, 641, 260 };
+    int podatki[] = { 585, 769, 588, 120, 253, 637, 668, 540, 948, 456, 426, 113, 746, 281, 185, 606, 205, 533, 650, 664, 591, 641, 260, 888, 947, 567 };
     int n = (int)(sizeof(podatki) / sizeof(podatki[0]));
 
     int k;
@@ -139,7 +139,7 @@ void primerStack() {
     std::cout << "\n=== primerStack (std::stack) ===\n";
 
     // Isti podatki: zadnji dodan gre ven prvi
-    std::stack<Record> st;
+    std::stack<Zapis> st;
 
     std::size_t i;
     for (i = 0; i < skupniPodatki.size(); ++i) {
@@ -148,7 +148,7 @@ void primerStack() {
 
     std::cout << "Isti podatki (LIFO: zadnji noter -> prvi ven):\n";
     while (!st.empty()) {
-        izpisiRecord(st.top());
+        izpisiZapis(st.top());
         st.pop();
     }
 
@@ -176,7 +176,7 @@ void primerStack() {
 void primerQueue() {
     std::cout << "\n=== primerQueue (std::queue) ===\n";
 
-    std::queue<Record> q;
+    std::queue<Zapis> q;
 
     std::size_t i;
     for (i = 0; i < skupniPodatki.size(); ++i) {
@@ -185,7 +185,7 @@ void primerQueue() {
 
     std::cout << "Isti podatki (FIFO: prvi noter -> prvi ven):\n";
     while (!q.empty()) {
-        izpisiRecord(q.front());
+        izpisiZapis(q.front());
         q.pop();
     }
 
@@ -214,26 +214,26 @@ void primerMap() {
     std::cout << "\n=== primerMap (std::map) ===\n";
 
     // Isti podatki: zgradimo mapo id -> Record
-    std::map<int, Record> poId;
+    std::map<int, Zapis> slovarPoID;
 
     std::size_t i;
     for (i = 0; i < skupniPodatki.size(); ++i) {
-        poId[skupniPodatki[i].id] = skupniPodatki[i];
+        slovarPoID[skupniPodatki[i].id] = skupniPodatki[i];
     }
 
     std::cout << "Isti podatki (urejeni ključi in izpis):\n";
-    std::map<int, Record>::const_iterator it;
-    for (it = poId.begin(); it != poId.end(); ++it) {
+    std::map<int, Zapis>::const_iterator it;
+    for (it = slovarPoID.begin(); it != slovarPoID.end(); ++it) {
         std::cout << "kljuc=" << it->first << " ->\n";
-        izpisiRecord(it->second);
+        izpisiZapis(it->second);
     }
 
     // Iskanje po ključu
-    int iskanId = 104;
+    int iskanId = 404;
     std::cout << "Iskanje zapisa z id=" << iskanId << ":\n";
-    std::map<int, Record>::iterator najden = poId.find(iskanId);
-    if (najden != poId.end()) {
-        izpisiRecord(najden->second);
+    std::map<int, Zapis>::iterator najden = slovarPoID.find(iskanId);
+    if (najden != slovarPoID.end()) {
+        izpisiZapis(najden->second);
     }
     else {
         std::cout << "  ni najdeno\n";
@@ -301,7 +301,7 @@ void primerVectorIteratorji() {
     std::cout << "Spreminjanje (vsak element +5):\n";
     std::vector<int>::iterator it2;
     for (it2 = v.begin(); it2 != v.end(); ++it2) {
-        *it2 = *it2 + 5;
+        *it2 = *it2 + rand() % 10;
     }
 
     // Ponovni izpis
@@ -398,6 +398,10 @@ bool jeSodo(int x) {
     return (x % 2) == 0;
 }
 
+bool jeVecjeOd5(int x) {
+    return x > 5;
+}
+
 int povecajZa10(int x) {
     return x + 10;
 }
@@ -437,6 +441,10 @@ int main() {
     // 3) count_if
     int stSodih = (int)std::count_if(v.begin(), v.end(), jeSodo);
     std::cout << "\nstd::count_if: stevilo sodih = " << stSodih << "\n";
+
+    // 3) count_if
+    int vecjih = (int)std::count_if(v.begin(), v.end(), jeVecjeOd5);
+    std::cout << "\nstd::count_if: večjih od 5 = " << vecjih << "\n";
 
     // 4) transform (v nov vektor)
     std::vector<int> vPlus10(v.size());
