@@ -15,7 +15,7 @@ private:
     static Student parseStudentLineOrThrow(const std::string& line, int lineNo);
 
     // Pomožne funkcije (skrite v razredu)
-    static std::string trim(const std::string& s);
+    static std::string trim(const std::string& source);
     static int toIntStrictOrThrow(const std::string& s, int lineNo);
 };
 

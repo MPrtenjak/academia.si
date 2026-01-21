@@ -10,7 +10,7 @@ private:
     int starost;
 
 public:
-    Student(const std::string& i, int s);
+    Student(const std::string& ime, int starost);
 
     const std::string& getIme() const;
     int getStarost() const;

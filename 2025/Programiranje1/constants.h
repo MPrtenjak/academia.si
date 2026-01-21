@@ -1,1 +1,1 @@
-#define STD_ALGORITMI_10
+#define PRIMER1

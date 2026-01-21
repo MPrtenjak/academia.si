@@ -9,7 +9,7 @@ protected:
     std::string msg;
 
 public:
-    explicit AppException(const std::string& m);
+    explicit AppException(const std::string& msg);
     virtual const char* what() const noexcept;
     virtual ~AppException() noexcept;
 };

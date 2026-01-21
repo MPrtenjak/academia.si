@@ -1,6 +1,6 @@
 #include "Student.h"
 
-Student::Student(const std::string& i, int s) : ime(i), starost(s) {}
+Student::Student(const std::string& ime, int starost) : ime(ime), starost(starost) {}
 
 const std::string& Student::getIme() const {
     return ime;

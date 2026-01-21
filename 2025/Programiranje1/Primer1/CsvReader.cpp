@@ -11,19 +11,19 @@
 #include "AppException.h"
 
 // ------------------ private helper: trim ------------------
-std::string CsvReader::trim(const std::string& s) {
-    size_t start = s.find_first_not_of(" \t\r\n");
+std::string CsvReader::trim(const std::string& source) {
+    size_t start = source.find_first_not_of(" \t\r\n");
     if (start == std::string::npos) return "";
-    size_t end = s.find_last_not_of(" \t\r\n");
-    return s.substr(start, end - start + 1);
+    size_t end = source.find_last_not_of(" \t\r\n");
+    return source.substr(start, end - start + 1);
 }
 
 // ------------------ private helper: string->int with validation ------------------
-int CsvReader::toIntStrictOrThrow(const std::string& s, int lineNo) {
-    std::string t = trim(s);
+int CsvReader::toIntStrictOrThrow(const std::string& source, int lineNo) {
+    std::string t = trim(source);
 
     if (t.empty())
-        throw InvalidFieldException(lineNo, "starost", s, "prazna vrednost");
+        throw InvalidFieldException(lineNo, "starost", source, "prazna vrednost");
 
     size_t idx = 0;
     int value = 0;
@@ -32,14 +32,14 @@ int CsvReader::toIntStrictOrThrow(const std::string& s, int lineNo) {
         value = std::stoi(t, &idx);
     }
     catch (const std::exception&) {
-        throw InvalidFieldException(lineNo, "starost", s, "ni celo stevilo");
+        throw InvalidFieldException(lineNo, "starost", source, "ni celo stevilo");
     }
 
     if (idx != t.size())
-        throw InvalidFieldException(lineNo, "starost", s, "vsebuje dodatne znake");
+        throw InvalidFieldException(lineNo, "starost", source, "vsebuje dodatne znake");
 
     if (value < 0 || value > 120)
-        throw InvalidFieldException(lineNo, "starost", s, "izven obsega 0..120");
+        throw InvalidFieldException(lineNo, "starost", source, "izven obsega 0..120");
 
     return value;
 }
