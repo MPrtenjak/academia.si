@@ -14,7 +14,9 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(TestiranjePrimer1 tst_primer1.cpp)
+add_executable(TestiranjePrimer1 tst_primer1.cpp
+    record.h record.cpp
+    parse.h parse.cpp)
 add_test(NAME TestiranjePrimer1 COMMAND TestiranjePrimer1)
 
 target_link_libraries(TestiranjePrimer1 PRIVATE Qt${QT_VERSION_MAJOR}::Test)
