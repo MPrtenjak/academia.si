@@ -18,6 +18,9 @@ private slots:
     void parseTest_data();
     void parseTest();
 
+    void testirajMinStevilo_data();
+    void testirajMinStevilo();
+
     /*
     void WhenInputIsCorrect_then_ExpectCorrectResult();
     void WhenInputIsCorrect_then_ExpectCorrectResult1();
@@ -32,6 +35,49 @@ private slots:
 primer1::primer1() {}
 
 primer1::~primer1() {}
+
+void primer1::testirajMinStevilo_data()
+{
+    QTest::addColumn<std::vector<int>>("seznam");
+    QTest::addColumn<int>("minVrednost");
+
+    QTest::newRow("t1") << std::vector<int>({ }) << 1;
+    QTest::newRow("t2") << std::vector<int>({ 12 }) << 12;
+    QTest::newRow("t3") << std::vector<int>({ -15 }) << -15;
+    QTest::newRow("t4") << std::vector<int>({ 12, 3 }) << 3;
+    QTest::newRow("t5") << std::vector<int>({ 3, 12 }) << 3;
+    QTest::newRow("t6") << std::vector<int>({ -15, 7, -8 }) << -15;
+    QTest::newRow("t7") << std::vector<int>({ 7, -15, -8 }) << -15;
+    QTest::newRow("t8") << std::vector<int>({ 7, -8, -15 }) << -15;
+    QTest::newRow("t9") << std::vector<int>({ -15, 7, -8, 5,6,7,8,9,34,6454,7,56, -456 }) << -456;
+    QTest::newRow("t10") << std::vector<int>({ 100000000, 1000000001, 1000000002 }) << 100000000;
+
+/*
+    QTest::newRow("t7") << std::vector<int>({ 1, 2, 3}) << 1;
+    QTest::newRow("t8") << std::vector<int>({ 1, 2, 3}) << 1;
+    QTest::newRow("t9") << std::vector<int>({ 1, 2, 3}) << 1;
+    QTest::newRow("t10") << std::vector<int>({ 1, 2, 3}) << 1;
+    QTest::newRow("t11") << std::vector<int>({ 1, 2, 3}) << 1;
+    QTest::newRow("t12") << std::vector<int>({ 1, 2, 3}) << 1;
+*/
+}
+
+void primer1::testirajMinStevilo()
+{
+    // ARR
+    QFETCH(std::vector<int>, seznam);
+    QFETCH(int, minVrednost);
+
+    try {
+        int rezultat = NajdiMinimalnoStevilo(seznam);
+
+        QCOMPARE(rezultat, minVrednost);
+    }
+    catch (...) {
+        QCOMPARE(seznam.size(), 0);
+    }
+}
+
 
 void primer1::parseTest_data()
 {

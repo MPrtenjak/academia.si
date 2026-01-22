@@ -17,3 +17,17 @@ bool parseRecord(const QString& line, Record& out)
     out.points = points;
     return true;
 }
+
+int NajdiMinimalnoStevilo(std::vector<int> seznam)
+{
+    if (seznam.size() < 1)
+        throw std::exception();
+
+    int minStevilo = seznam[0];
+    for (int i = 1; i < seznam.size(); ++i) {
+        if (seznam[i] < minStevilo)
+            minStevilo = seznam[i];
+    }
+
+    return minStevilo;
+}

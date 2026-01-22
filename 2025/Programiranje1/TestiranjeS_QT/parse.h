@@ -6,4 +6,6 @@
 
 bool parseRecord(const QString& line, Record& out);
 
+int NajdiMinimalnoStevilo(std::vector<int> seznam);
+
 #endif // PARSE_H
