@@ -74,6 +74,13 @@ void primer1::parseTest_data()
         << QString("Matilda")
         << 12;
 
+    QTest::newRow("WhenInputHasSpacesInTheName_the_ExcpectSpacesWillRemainInTheName")
+        << QString("        Ana   Lisa     ;   12   ")
+        << false
+        << true
+        << QString("Ana   Lisa")
+        << 12;
+
     QTest::newRow("WhenNumberIsNegative_then_ExpectCorrectResult")
         << QString("xxx;-13")
         << false
