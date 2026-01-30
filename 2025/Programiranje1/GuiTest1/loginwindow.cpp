@@ -21,8 +21,12 @@ LoginWindow::~LoginWindow()
 void LoginWindow::setupUI()
 {
     setWindowTitle("Login");
-    setFixedSize(360, 200);
-    // setBaseSize(360, 200);
+
+    // Okno s fiksno velikostjo
+    // setFixedSize(360, 200);
+
+    // okno s spremenljivo velikostjo in postavljeno začetno velikostjo
+    resize(360, 200);
 
     userLabel = new QLabel("User name", this);
     userLabel->setGeometry(20, 20, 100, 24);
