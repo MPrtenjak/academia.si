@@ -25,6 +25,7 @@ private slots:
     void onButton1Pressed();
     void onMoveTextPressed();
     void onLoginButtionPressed();
+    void onChangeButtonPressed();
 
     void onTextEdited(const QString &text);
 
@@ -40,6 +41,7 @@ private:
     QPushButton* buttonEdit;
 
     QPushButton* loginButton;
+    QPushButton* changePassButton;
 
     int counter = 0;
     int counter1 = 0;

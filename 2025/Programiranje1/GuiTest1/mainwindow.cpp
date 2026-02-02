@@ -3,6 +3,7 @@
 
 #include <QMessageBox>
 #include "LoginWindow.h"
+#include "PasswordChange.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -75,6 +76,10 @@ void MainWindow::setupUI()
     connect(loginButton, &QPushButton::clicked,
             this, &MainWindow::onLoginButtionPressed);
 
+    changePassButton = new QPushButton("Change pass", this);
+    changePassButton->setGeometry(210, 55 + 35 * 8, 180, 30);
+    connect(changePassButton, &QPushButton::clicked,
+            this, &MainWindow::onChangeButtonPressed);
 }
 
 void MainWindow::onButtonPressed()
@@ -113,4 +118,14 @@ void MainWindow::onLoginButtionPressed()
     loginWindow->show();
     loginWindow->raise();
     loginWindow->activateWindow();
+}
+
+void MainWindow::onChangeButtonPressed()
+{
+    PasswordChange* passwordChangeWindow = new PasswordChange(this);
+
+    passwordChangeWindow->setAttribute(Qt::WA_DeleteOnClose);
+    passwordChangeWindow->show();
+    passwordChangeWindow->raise();
+    passwordChangeWindow->activateWindow();
 }

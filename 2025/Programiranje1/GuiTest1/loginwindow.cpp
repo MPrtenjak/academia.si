@@ -2,7 +2,7 @@
 #include "ui_loginwindow.h"
 
 #include <QMessageBox>
-#include "loginmanager.h"<QMessageBox>"
+#include "loginmanager.h"
 
 LoginWindow::LoginWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -21,12 +21,8 @@ LoginWindow::~LoginWindow()
 void LoginWindow::setupUI()
 {
     setWindowTitle("Login");
-
-    // Okno s fiksno velikostjo
-    // setFixedSize(360, 200);
-
-    // okno s spremenljivo velikostjo in postavljeno začetno velikostjo
-    resize(360, 200);
+    setFixedSize(360, 200);
+    // setBaseSize(360, 200);
 
     userLabel = new QLabel("User name", this);
     userLabel->setGeometry(20, 20, 100, 24);
