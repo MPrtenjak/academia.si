@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_executable(Programiranje2 
 	"constants.h"
 	"napredno.cpp"
- "srecanje1.cpp" "srecanje1_naloge.cpp")
+ "srecanje1.cpp" "srecanje1_naloge.cpp" "srecanje3.cpp" "srecanje4.cpp")
 
 include(GNUInstallDirs)
 install(TARGETS Programiranje2
