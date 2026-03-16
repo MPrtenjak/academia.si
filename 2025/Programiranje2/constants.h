@@ -1,1 +1,1 @@
-#define BUBBLE_SORT_30
+#define PRIM
