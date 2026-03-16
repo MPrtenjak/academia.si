@@ -16,7 +16,7 @@ using namespace std;
 
 struct Edge {
 	string from, to;
-	int weight;
+	int weight = 0;
 };
 
 set<string> GetAllNodes(const vector<Edge> graph) {
@@ -44,7 +44,7 @@ bool isVisited(const vector<string> visited, string node) {
 	return find(visited.begin(), visited.end(), node) != visited.end();
 }
 
-Edge getMinReminingEdge(const const vector<Edge> graph, const vector<string> visited, const vector<string> unvisited) {
+Edge getMinReminingEdge(const vector<Edge> graph, const vector<string> visited, const vector<string> unvisited) {
 	int minWeight = numeric_limits<int>::max();
 	Edge minEdge;
 
@@ -103,7 +103,7 @@ void prim(const std::vector<Edge>& graph)
 
 struct DijkstraNode {
 	string node;
-	int sumPathToNode;
+	int sumPathToNode = 0;
 };
 
 void dijkstra(const std::vector<Edge>& graph, string startNode, string endNode) {
