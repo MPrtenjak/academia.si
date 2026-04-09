@@ -12,7 +12,7 @@
 
 using namespace std;
 
-#ifdef PRIM
+#if defined(PRIM) || defined(DIJKSTRA)
 
 struct Edge {
 	string from, to;
@@ -147,7 +147,7 @@ void dijkstra(const std::vector<Edge>& graph, string startNode, string endNode) 
 		}
 	}
 
-	// print path from endNode to startNode
+	cout << "Dijkstra path:" << endl;
 	string pathNode = endNode;
 	while (pathNode != startNode) {
 		pair<string, int> pathTo = bestPathToNode[pathNode];
@@ -170,8 +170,13 @@ int main() {
 		{ "E", "F", 9 }
 	};
 
-	//prim(graph);
+#ifdef PRIM
+	prim(graph);
+#endif
+
+#ifdef DIJKSTRA
 	dijkstra(graph, "A", "F");
+#endif
 
 	return 0;
 }

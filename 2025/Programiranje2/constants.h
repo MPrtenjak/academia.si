@@ -1,1 +1,1 @@
-#define PRIM
+#define DIJKSTRA
