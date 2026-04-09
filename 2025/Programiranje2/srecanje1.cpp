@@ -18,35 +18,12 @@ class IntVector {
 private:
     int* data;
     int size;
-    int capacity;
-    static const int MIN_CAP = 10;
-
-    void resize(int newCap) {
-        if (newCap < MIN_CAP) newCap = MIN_CAP;
-
-        int* b = new int[newCap];
-        for (int i = 0; i < size; ++i) b[i] = data[i];
-
-        delete[] data;
-        data = b;
-        capacity = newCap;
-    }
-
-    void grow_if_needed() {
-        if (size < capacity) return;
-        resize(capacity * 2);
-    }
-
-    void shrink_if_needed() {
-        if (capacity <= MIN_CAP) return;
-        if (size <= capacity / 4) resize(capacity / 2);
-    }
+    static const int MAX_CAPACITY = 10;
 
 public:
     IntVector() {
-        data = new int[MIN_CAP];
+        data = new int[MAX_CAPACITY];
         size = 0;
-        capacity = MIN_CAP;
     }
 
     ~IntVector() {
@@ -70,7 +47,7 @@ public:
     }
 
     void push_back(int x) {
-        grow_if_needed();
+		if (size >= MAX_CAPACITY) throw std::out_of_range("push_back");
         data[size++] = x;
     }
 
@@ -79,9 +56,7 @@ public:
     }
 
     void insert(int i, int x) {
-        if (i < 0 || i > size) throw std::out_of_range("insert");
-
-        grow_if_needed();
+        if (i < 0 || i > size || size >= MAX_CAPACITY) throw std::out_of_range("insert");
 
         for (int k = size; k > i; --k) {
             data[k] = data[k - 1];
@@ -97,7 +72,6 @@ public:
             data[k] = data[k + 1];
         }
         --size;
-        shrink_if_needed();
     }
 };
 
@@ -126,7 +100,7 @@ int main() {
         printIntVector(iv, 4);
 
         // insert
-        iv.insert(2, 15); // [5,10,15,20,30]
+        iv.insert(2, 15);
         std::cout << "After insert(2,15):      ";
         printIntVector(iv, 5);
 
@@ -134,7 +108,7 @@ int main() {
         std::cout << "get(3) = " << iv.get(3) << " (expected 20)\n";
 
         // set
-        iv.set(3, 99); // [5,10,15,99,30]
+        iv.set(3, 99);
         std::cout << "After set(3,99):         ";
         printIntVector(iv, 5);
 
@@ -143,9 +117,144 @@ int main() {
         std::cout << "find(123) = " << iv.find(123) << " (expected -1)\n";
 
         // erase
-        iv.erase(1); // remove 10 -> [5,15,99,30]
+        iv.erase(1);
         std::cout << "After erase(1):          ";
         printIntVector(iv, 4);
+
+        try
+        {
+            for (size_t i = 0; i < 12; i++)
+            {
+                std::cout << "Pushing back 12, iteration " << i << "\n";
+                iv.push_back(12);
+            }
+        }
+        catch (const std::exception& e)
+        {
+            std::cout << "Exception: " << e.what() << "\n";
+        }
+
+        std::cout << "\nAll tests done.\n";
+    }
+    catch (const std::exception& e) {
+        std::cout << "Exception: " << e.what() << "\n";
+    }
+
+    return 0;
+}
+#endif
+
+#ifdef SIMPLE_VECTOR_20
+
+template <typename T>
+class SimpleVector {
+private:
+    T* data;
+    int size;
+    static const int MAX_CAPACITY = 10;
+
+public:
+    SimpleVector() {
+        data = new T[MAX_CAPACITY];
+        size = 0;
+    }
+
+    ~SimpleVector() {
+        delete[] data;
+    }
+
+    T get(int i) const {
+        if (i < 0 || i >= size) throw std::out_of_range("get");
+        return data[i];
+    }
+
+    void set(int i, T x) {
+        if (i < 0 || i >= size) throw std::out_of_range("set");
+        data[i] = x;
+    }
+
+    int find(T x) const {
+        for (int i = 0; i < size; ++i)
+            if (data[i] == x) return i;
+        return -1;
+    }
+
+    void push_back(T x) {
+        if (size >= MAX_CAPACITY) throw std::out_of_range("push_back");
+        data[size++] = x;
+    }
+
+    void push_front(T x) {
+        insert(0, x);
+    }
+
+    void insert(int i, T x) {
+        if (i < 0 || i > size || size >= MAX_CAPACITY) throw std::out_of_range("insert");
+
+        for (int k = size; k > i; --k) {
+            data[k] = data[k - 1];
+        }
+        data[i] = x;
+        ++size;
+    }
+
+    void erase(int i) {
+        if (i < 0 || i >= size) throw std::out_of_range("erase");
+
+        for (int k = i; k < size - 1; ++k) {
+            data[k] = data[k + 1];
+        }
+        --size;
+    }
+};
+
+template <typename T>
+void printSimpleVector(const SimpleVector<T>& v, int count) {
+    std::cout << "[ ";
+    for (int i = 0; i < count; ++i) std::cout << v.get(i) << " ";
+    std::cout << "]\n";
+}
+
+int main() {
+    try {
+        std::cout << "=== Test Test SimpleVector<std::int> ===\n";
+        SimpleVector<int> iv;
+
+        // push_back
+        iv.push_back(10);
+        iv.push_back(20);
+        iv.push_back(30);
+        std::cout << "After push_back 10,20,30: ";
+        printSimpleVector(iv, 3);
+
+        // push_front
+        iv.push_front(5);
+        std::cout << "After push_front 5:      ";
+        printSimpleVector(iv, 4);
+
+        // insert
+        iv.insert(2, 15); // [5,10,15,20,30]
+        std::cout << "After insert(2,15):      ";
+        printSimpleVector(iv, 5);
+
+        // get
+        std::cout << "get(3) = " << iv.get(3) << " (expected 20)\n";
+
+        // set
+        iv.set(3, 99); // [5,10,15,99,30]
+        std::cout << "After set(3,99):         ";
+        printSimpleVector(iv, 5);
+
+        // find
+        std::cout << "find(15) = " << iv.find(15) << " (expected 2)\n";
+        std::cout << "find(123) = " << iv.find(123) << " (expected -1)\n";
+
+        // erase
+        iv.erase(1); // remove 10 -> [5,15,99,30]
+        std::cout << "After erase(1):          ";
+        printSimpleVector(iv, 4);
+
+        std::cout << "\nAll tests done.\n";
 
         std::cout << "\n=== Test SimpleVector<std::string> ===\n";
         SimpleVector<std::string> sv;
@@ -192,103 +301,10 @@ int main() {
 
     return 0;
 }
-#endif
 
-#ifdef SIMPLE_VECTOR_20
-
-template <typename T>
-class SimpleVector {
-private:
-    T* data;
-    int size;
-    int capacity;
-    static const int MIN_CAP = 10;
-
-    void resize(int newCap) {
-        if (newCap < MIN_CAP) newCap = MIN_CAP;
-
-        T* b = new T[newCap];
-        for (int i = 0; i < size; ++i) b[i] = data[i];
-
-        delete[] data;
-        data = b;
-        capacity = newCap;
-    }
-
-    void grow_if_needed() {
-        if (size < capacity) return;
-        resize(capacity * 2);
-    }
-
-    void shrink_if_needed() {
-        if (capacity <= MIN_CAP) return;
-        if (size <= capacity / 4) resize(capacity / 2);
-    }
-
-public:
-    SimpleVector() {
-        data = new T[MIN_CAP];
-        size = 0;
-        capacity = MIN_CAP;
-    }
-
-    ~SimpleVector() {
-        delete[] data;
-    }
-
-    T get(int i) const {
-        if (i < 0 || i >= size) throw std::out_of_range("get");
-        return data[i];
-    }
-
-    void set(int i, T x) {
-        if (i < 0 || i >= size) throw std::out_of_range("set");
-        data[i] = x;
-    }
-
-    int find(T x) const {
-        for (int i = 0; i < size; ++i)
-            if (data[i] == x) return i;
-        return -1;
-    }
-
-    void push_back(T x) {
-        grow_if_needed();
-        data[size++] = x;
-    }
-
-    void push_front(T x) {
-        insert(0, x);
-    }
-
-    void insert(int i, T x) {
-        if (i < 0 || i > size) throw std::out_of_range("insert");
-
-        grow_if_needed();
-
-        for (int k = size; k > i; --k) {
-            data[k] = data[k - 1];
-        }
-        data[i] = x;
-        ++size;
-    }
-
-    void erase(int i) {
-        if (i < 0 || i >= size) throw std::out_of_range("erase");
-
-        for (int k = i; k < size - 1; ++k) {
-            data[k] = data[k + 1];
-        }
-        --size;
-        shrink_if_needed();
-    }
-};
 #endif
 
 #ifdef QUEUE
-
-#include <iostream>
-#include <stdexcept>
 
 struct Element {
     int value;
@@ -386,7 +402,7 @@ int main() {
 int main()
 {
 	std::vector<int> v = { 1, 2, 3, 4, 5 };
-*/
+
     // print before
     std::cout << "Before: [ ";
     for (int i = 0; i < (int)v.size(); ++i) std::cout << v[i] << " ";
