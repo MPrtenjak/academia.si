@@ -1,1 +1,2 @@
-#define DIJKSTRA
+#define PRIMER_04
+

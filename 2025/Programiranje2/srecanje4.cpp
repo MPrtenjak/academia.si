@@ -38,7 +38,7 @@ int main()
     int n = sizeof(a) / sizeof(a[0]);
     int i;
 
-    cout << "Before sorting:" << endl;
+    cout << "Pred razvrščanjem:" << endl;
     for (i = 0; i < n; i++)
     {
         cout << a[i] << " ";
@@ -47,7 +47,7 @@ int main()
 
     bubbleSort(a, n);
 
-    cout << "After sorting:" << endl;
+    cout << "Po razvrščanju:" << endl;
     for (i = 0; i < n; i++)
     {
         cout << a[i] << " ";
@@ -102,7 +102,7 @@ int main()
     int n = sizeof(users) / sizeof(users[0]);
     int i;
 
-    cout << "Before sorting:" << endl;
+    cout << "Pred razvrščanjem:" << endl;
     for (i = 0; i < n; i++)
     {
         cout << users[i].name << " "
@@ -113,7 +113,7 @@ int main()
     bubbleSortUsersBySurname(users, n);
 
     cout << endl;
-    cout << "After sorting by surname:" << endl;
+    cout << "Po razvrščanju po priimku:" << endl;
     for (i = 0; i < n; i++)
     {
         cout << users[i].name << " "
@@ -214,30 +214,30 @@ int main()
     };
     int nUsers = sizeof(users) / sizeof(users[0]);
 
-    cout << "Integers before sorting:" << endl;
+    cout << "Cela števila pred razvrščanjem:" << endl;
     printInts(numbers, nNumbers);
 
     bubbleSort(numbers, nNumbers, compareInt);
 
-    cout << "Integers after sorting:" << endl;
+    cout << "Cela števila po razvrščanju:" << endl;
     printInts(numbers, nNumbers);
 
     cout << endl;
 
-    cout << "Users before sorting:" << endl;
+    cout << "Uporabniki pred razvrščanjem:" << endl;
     printUsers(users, nUsers);
 
     bubbleSort(users, nUsers, compareUserBySurname);
 
     cout << endl;
-    cout << "Users after sorting by surname:" << endl;
+    cout << "Uporabniki po razvrščanju po priimku:" << endl;
     printUsers(users, nUsers);
 
 
     bubbleSort(users, nUsers, compareUserByName);
 
     cout << endl;
-    cout << "Users after sorting by name:" << endl;
+    cout << "Uporabniki po razvrščanju po imenu:" << endl;
     printUsers(users, nUsers);
 
     return 0;

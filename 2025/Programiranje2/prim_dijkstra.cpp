@@ -92,13 +92,13 @@ void prim(const std::vector<Edge>& graph)
 	}
 
 	int sumWeight = 0;
-	cout << "Prims path:" << endl;
+	cout << "Primova pot:" << endl;
 	for (vector<Edge>::const_iterator p = primsPath.begin(); p != primsPath.end(); ++p)
 	{
 		cout << p->from << " - " << p->to << " : " << p->weight << endl;
 		sumWeight += p->weight;
 	}
-	cout << "Total weight: " << sumWeight << endl;
+	cout << "Skupna teža: " << sumWeight << endl;
 }
 
 struct DijkstraNode {
@@ -147,7 +147,7 @@ void dijkstra(const std::vector<Edge>& graph, string startNode, string endNode) 
 		}
 	}
 
-	cout << "Dijkstra path:" << endl;
+	cout << "Dijkstrova pot:" << endl;
 	string pathNode = endNode;
 	while (pathNode != startNode) {
 		pair<string, int> pathTo = bestPathToNode[pathNode];

@@ -40,7 +40,7 @@ int main()
 
 long long fibonacci(int iN)
 {
-    if (iN < 0) throw std::invalid_argument("Negative index not allowed");
+    if (iN < 0) throw std::invalid_argument("Negativen indeks ni dovoljen");
     if (iN == 0 || iN == 1) return 1;
 
     vector<long long> fib{ 1, 1 };
@@ -53,7 +53,7 @@ long long fibonacci(int iN)
 int main()
 {
     for (int i = 0; i <= 50; ++i)
-        cout << "Fibonacci of " << i << ": " << fibonacci(i) << endl;
+        cout << "Fibonacci za " << i << ": " << fibonacci(i) << endl;
 }
 
 #endif

@@ -84,60 +84,60 @@ void printIntVector(const IntVector& v, int count) {
 
 int main() {
     try {
-        std::cout << "=== Test IntVector ===\n";
+        std::cout << "=== Preizkus IntVector ===\n";
         IntVector iv;
 
         // push_back
         iv.push_back(10);
         iv.push_back(20);
         iv.push_back(30);
-        std::cout << "After push_back 10,20,30: ";
+        std::cout << "Po push_back 10,20,30: ";
         printIntVector(iv, 3);
 
         // push_front
         iv.push_front(5);
-        std::cout << "After push_front 5:      ";
+        std::cout << "Po push_front 5:      ";
         printIntVector(iv, 4);
 
         // insert
         iv.insert(2, 15);
-        std::cout << "After insert(2,15):      ";
+        std::cout << "Po insert(2,15):      ";
         printIntVector(iv, 5);
 
         // get
-        std::cout << "get(3) = " << iv.get(3) << " (expected 20)\n";
+        std::cout << "get(3) = " << iv.get(3) << " (pričakovano 20)\n";
 
         // set
         iv.set(3, 99);
-        std::cout << "After set(3,99):         ";
+        std::cout << "Po set(3,99):         ";
         printIntVector(iv, 5);
 
         // find
-        std::cout << "find(15) = " << iv.find(15) << " (expected 2)\n";
-        std::cout << "find(123) = " << iv.find(123) << " (expected -1)\n";
+        std::cout << "find(15) = " << iv.find(15) << " (pričakovano 2)\n";
+        std::cout << "find(123) = " << iv.find(123) << " (pričakovano -1)\n";
 
         // erase
         iv.erase(1);
-        std::cout << "After erase(1):          ";
+        std::cout << "Po erase(1):          ";
         printIntVector(iv, 4);
 
         try
         {
             for (size_t i = 0; i < 12; i++)
             {
-                std::cout << "Pushing back 12, iteration " << i << "\n";
+                std::cout << "Dodajam 12 na konec, ponovitev " << i << "\n";
                 iv.push_back(12);
             }
         }
         catch (const std::exception& e)
         {
-            std::cout << "Exception: " << e.what() << "\n";
+            std::cout << "Izjema: " << e.what() << "\n";
         }
 
-        std::cout << "\nAll tests done.\n";
+        std::cout << "\nVsi testi so zaključeni.\n";
     }
     catch (const std::exception& e) {
-        std::cout << "Exception: " << e.what() << "\n";
+        std::cout << "Izjema: " << e.what() << "\n";
     }
 
     return 0;
@@ -217,86 +217,86 @@ void printSimpleVector(const SimpleVector<T>& v, int count) {
 
 int main() {
     try {
-        std::cout << "=== Test Test SimpleVector<std::int> ===\n";
+        std::cout << "=== Preizkus SimpleVector<int> ===\n";
         SimpleVector<int> iv;
 
         // push_back
         iv.push_back(10);
         iv.push_back(20);
         iv.push_back(30);
-        std::cout << "After push_back 10,20,30: ";
+        std::cout << "Po push_back 10,20,30: ";
         printSimpleVector(iv, 3);
 
         // push_front
         iv.push_front(5);
-        std::cout << "After push_front 5:      ";
+        std::cout << "Po push_front 5:      ";
         printSimpleVector(iv, 4);
 
         // insert
         iv.insert(2, 15); // [5,10,15,20,30]
-        std::cout << "After insert(2,15):      ";
+        std::cout << "Po insert(2,15):      ";
         printSimpleVector(iv, 5);
 
         // get
-        std::cout << "get(3) = " << iv.get(3) << " (expected 20)\n";
+        std::cout << "get(3) = " << iv.get(3) << " (pričakovano 20)\n";
 
         // set
         iv.set(3, 99); // [5,10,15,99,30]
-        std::cout << "After set(3,99):         ";
+        std::cout << "Po set(3,99):         ";
         printSimpleVector(iv, 5);
 
         // find
-        std::cout << "find(15) = " << iv.find(15) << " (expected 2)\n";
-        std::cout << "find(123) = " << iv.find(123) << " (expected -1)\n";
+        std::cout << "find(15) = " << iv.find(15) << " (pričakovano 2)\n";
+        std::cout << "find(123) = " << iv.find(123) << " (pričakovano -1)\n";
 
         // erase
         iv.erase(1); // remove 10 -> [5,15,99,30]
-        std::cout << "After erase(1):          ";
+        std::cout << "Po erase(1):          ";
         printSimpleVector(iv, 4);
 
-        std::cout << "\nAll tests done.\n";
+        std::cout << "\nVsi testi so zaključeni.\n";
 
-        std::cout << "\n=== Test SimpleVector<std::string> ===\n";
+        std::cout << "\n=== Preizkus SimpleVector<std::string> ===\n";
         SimpleVector<std::string> sv;
 
         // push_back
         sv.push_back("B");
         sv.push_back("C");
-        std::cout << "After push_back B,C:     ";
+        std::cout << "Po push_back B,C:     ";
         printSimpleVector(sv, 2);
 
         // push_front
         sv.push_front("A");
-        std::cout << "After push_front A:      ";
+        std::cout << "Po push_front A:      ";
         printSimpleVector(sv, 3);
 
         // insert
         sv.insert(3, "E"); // append via insert
         sv.insert(3, "D"); // [A,B,C,D,E]
-        std::cout << "After insert D,E:        ";
+        std::cout << "Po insert D,E:        ";
         printSimpleVector(sv, 5);
 
         // get
-        std::cout << "get(4) = " << sv.get(4) << " (expected E)\n";
+        std::cout << "get(4) = " << sv.get(4) << " (pričakovano E)\n";
 
         // set
         sv.set(2, "X"); // [A,B,X,D,E]
-        std::cout << "After set(2,X):          ";
+        std::cout << "Po set(2,X):          ";
         printSimpleVector(sv, 5);
 
         // find
-        std::cout << "find(D) = " << sv.find("D") << " (expected 3)\n";
-        std::cout << "find(Z) = " << sv.find("Z") << " (expected -1)\n";
+        std::cout << "find(D) = " << sv.find("D") << " (pričakovano 3)\n";
+        std::cout << "find(Z) = " << sv.find("Z") << " (pričakovano -1)\n";
 
         // erase
         sv.erase(1); // remove B -> [A,X,D,E]
-        std::cout << "After erase(1):          ";
+        std::cout << "Po erase(1):          ";
         printSimpleVector(sv, 4);
 
-        std::cout << "\nAll tests done.\n";
+        std::cout << "\nVsi testi so zaključeni.\n";
     }
     catch (const std::exception& e) {
-        std::cout << "Exception: " << e.what() << "\n";
+        std::cout << "Izjema: " << e.what() << "\n";
     }
 
     return 0;
@@ -343,7 +343,7 @@ public:
     }
 
     int dequeue() {
-        if (isEmpty()) throw std::out_of_range("dequeue: empty queue");
+        if (isEmpty()) throw std::out_of_range("dequeue: prazna vrsta");
 
         Element* old = head;
         int v = old->value;
@@ -359,7 +359,7 @@ public:
     }
 
     int front() const { // peek
-        if (isEmpty()) throw std::out_of_range("front: empty queue");
+        if (isEmpty()) throw std::out_of_range("front: prazna vrsta");
         return head->value;
     }
 
@@ -375,22 +375,22 @@ public:
 int main() {
     Queue q;
 
-    std::cout << "Empty? " << q.isEmpty() << "\n";
+    std::cout << "Prazna? " << q.isEmpty() << "\n";
     q.enqueue(10);
     q.enqueue(20);
     q.enqueue(30);
 
-    std::cout << "Size: " << q.size() << "\n";
-    std::cout << "Front: " << q.front() << "\n";
+    std::cout << "Velikost: " << q.size() << "\n";
+    std::cout << "Začetek: " << q.front() << "\n";
 
-    std::cout << "Dequeue: " << q.dequeue() << "\n";
-    std::cout << "Front: " << q.front() << "\n";
-    std::cout << "Size: " << q.size() << "\n";
+    std::cout << "Odstrani iz vrste: " << q.dequeue() << "\n";
+    std::cout << "Začetek: " << q.front() << "\n";
+    std::cout << "Velikost: " << q.size() << "\n";
 
-    std::cout << "Dequeue: " << q.dequeue() << "\n";
-    std::cout << "Dequeue: " << q.dequeue() << "\n";
+    std::cout << "Odstrani iz vrste: " << q.dequeue() << "\n";
+    std::cout << "Odstrani iz vrste: " << q.dequeue() << "\n";
 
-    std::cout << "Empty? " << q.isEmpty() << "\n";
+    std::cout << "Prazna? " << q.isEmpty() << "\n";
 
     return 0;
 }
@@ -404,7 +404,7 @@ int main()
 	std::vector<int> v = { 1, 2, 3, 4, 5 };
 
     // print before
-    std::cout << "Before: [ ";
+    std::cout << "Pred: [ ";
     for (int i = 0; i < (int)v.size(); ++i) std::cout << v[i] << " ";
     std::cout << "]\n";
 
@@ -421,7 +421,7 @@ int main()
     }
 
     // print after
-    std::cout << "After:  [ ";
+    std::cout << "Po:    [ ";
     for (int i = 0; i < (int)v.size(); ++i) std::cout << v[i] << " ";
     std::cout << "]\n";
 
@@ -438,7 +438,7 @@ int main()
     std::vector<int> v = { 1, 2, 1, 2, 2, 1, 3, 4, 1, 4 };
 
     // print before
-    std::cout << "Before: [ ";
+    std::cout << "Pred: [ ";
     for (int i = 0; i < (int)v.size(); ++i) std::cout << v[i] << " ";
     std::cout << "]\n";
 
@@ -467,7 +467,7 @@ int main()
 	std::vector<int> v = { 1, 2, 1, 2, 2, 1, 3, 4, 1, 4 };
 
     // print before
-    std::cout << "Before: [ ";
+    std::cout << "Pred: [ ";
     for (int i = 0; i < (int)v.size(); ++i) std::cout << v[i] << " ";
     std::cout << "]\n";
 
@@ -523,16 +523,16 @@ int main()
     string inputExpression;
 
     while (true) {
-        cout << "Enter an expression ('x' to exit): ";
+        cout << "Vnesi izraz ('x' za izhod): ";
         cin >> inputExpression;
 
 		if (inputExpression == "x") break;
 
         if (isValid(inputExpression)) {
-            cout << "The expression is valid.\n";
+            cout << "Izraz je veljaven.\n";
         }
         else {
-            cout << "The expression is NOT valid.\n";
+            cout << "Izraz NI veljaven.\n";
         }
 
         cout << endl << endl;

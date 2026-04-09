@@ -20,10 +20,10 @@ void printoutBuckets(vector<int>* buckets, int N)
 {
 	system("cls");
     cout << endl;
-    cout << "Contents of buckets:" << endl;
+    cout << "Vsebina košev:" << endl;
     for (int i = 0; i < N; i++)
     {
-        cout << "Bucket " << i << ": ";
+        cout << "Koš " << i << ": ";
         for (int j = 0; j < (int)buckets[i].size(); j++)
         {
             cout << buckets[i][j] << " ";
@@ -36,19 +36,19 @@ int main()
 {
     int N;
 
-    cout << "Enter N: ";
+    cout << "Vnesi N: ";
     cin >> N;
 
     if (N <= 0)
     {
-        cout << "N must be greater than 0." << endl;
+        cout << "N mora biti večji od 0." << endl;
         return 1;
     }
 
     vector<int>* buckets = new vector<int>[N];
 
     int number;
-    cout << "Enter integers (0 to stop):" << endl;
+    cout << "Vnesi cela števila (0 za konec):" << endl;
 
     while (true)
     {
@@ -103,7 +103,7 @@ int main()
     usersBySurname.insert(pair<string, User>(u4.surname, u4));
     usersBySurname.insert(pair<string, User>(u5.surname, u5));
 
-    cout << "Users grouped by surname:" << endl;
+    cout << "Uporabniki, združeni po priimku:" << endl;
 
     multimap<string, User>::iterator it;
     for (it = usersBySurname.begin(); it != usersBySurname.end(); ++it)
@@ -146,19 +146,19 @@ int main()
     users[u4.surname][u4.name] = u4;
     users[u5.surname][u5.name] = u5;
 
-    cout << "Users grouped by surname, then by name:" << endl;
+    cout << "Uporabniki, združeni po priimku, nato po imenu:" << endl;
 
     map<string, map<string, User> >::iterator itSurname;
     map<string, User>::iterator itName;
 
     for (itSurname = users.begin(); itSurname != users.end(); ++itSurname)
     {
-        cout << "Surname: " << itSurname->first << endl;
+        cout << "Priimek: " << itSurname->first << endl;
 
         for (itName = itSurname->second.begin(); itName != itSurname->second.end(); ++itName)
         {
-            cout << "  Name: " << itName->first
-                << " -> age " << itName->second.age << endl;
+            cout << "  Ime: " << itName->first
+                << " -> starost " << itName->second.age << endl;
         }
     }
 

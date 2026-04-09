@@ -27,7 +27,7 @@ int main() {
 	swapValues(x, y);
 	cout << "x: " << x << ", y: " << y << endl << endl;
 
-	string str1 = "Hello", str2 = "World";
+	string str1 = "Pozdravljen", str2 = "Svet";
 	cout << "str1: " << str1 << ", str2: " << str2 << endl;
 	swapValues(str1, str2);
 	cout << "str1: " << str1 << ", str2: " << str2 << endl << endl;
@@ -128,12 +128,12 @@ int main()
 	printArray(a, n);
 
 	cout << "------------------" << endl;
-	cout << "Applying square function to array:" << endl;
+	cout << "Uporabljam funkcijo kvadriranja na tabeli:" << endl;
     applyToArray(a, n, square);
 	printArray(a, n);
 
     cout << "------------------" << endl;
-	cout << "Applying plus10 function to array:" << endl;
+	cout << "Uporabljam funkcijo plus10 na tabeli:" << endl;
     applyToArray(a, n, plus10);
     printArray(a, n);
 
@@ -210,22 +210,22 @@ int main()
     printArray(a, n);
 
     cout << "------------------" << endl;
-	cout << "Sorting array in ascending order:" << endl;
+	cout << "Razvrščanje tabele naraščajoče:" << endl;
     bubbleSort(a, n, swapAsc);
     printArray(a, n);
 
     cout << "------------------" << endl;
-	cout << "Sorting array in descending order:" << endl;
+	cout << "Razvrščanje tabele padajoče:" << endl;
 	bubbleSort(a, n, swapDesc);
     printArray(a, n);
 
     cout << "------------------" << endl;
-    cout << "Sorting array (first odd then even numbers):" << endl;
+    cout << "Razvrščanje tabele (najprej liha, nato soda števila):" << endl;
     bubbleSort(a, n, swapEvenAscOddAsc);
     printArray(a, n);
 
     cout << "------------------" << endl;
-    cout << "Sorting array (based on the last digit!):" << endl;
+    cout << "Razvrščanje tabele (glede na zadnjo števko!):" << endl;
     bubbleSort(a, n, swapBasedOnLastDigit);
     printArray(a, n);
 
@@ -340,7 +340,7 @@ struct Log {
 
 int main() {
     Log log;
-    log << "Score = " << 42 << "Age = "  << 13;
+    log << "Rezultat = " << 42 << "Starost = "  << 13;
 }
 
 #endif
@@ -351,11 +351,11 @@ struct Tiny3 {
     int a[3];
 
     int& operator[](int i) {
-        if (i < 0 || i >= 3) throw std::out_of_range("index");
+        if (i < 0 || i >= 3) throw std::out_of_range("indeks");
         return a[i];
     }
     const int& operator[](int i) const {
-        if (i < 0 || i >= 3) throw std::out_of_range("index");
+        if (i < 0 || i >= 3) throw std::out_of_range("indeks");
         return a[i];
     }
 };
