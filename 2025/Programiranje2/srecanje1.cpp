@@ -55,20 +55,20 @@ public:
         insert(0, x);
     }
 
-    void insert(int i, int x) {
-        if (i < 0 || i > size || size >= MAX_CAPACITY) throw std::out_of_range("insert");
+    void insert(int position, int value) {
+        if (position < 0 || position > size || size >= MAX_CAPACITY) throw std::out_of_range("insert");
 
-        for (int k = size; k > i; --k) {
+        for (int k = size; k > position; --k) {
             data[k] = data[k - 1];
         }
-        data[i] = x;
+        data[position] = value;
         ++size;
     }
 
-    void erase(int i) {
-        if (i < 0 || i >= size) throw std::out_of_range("erase");
+    void erase(int position) {
+        if (position < 0 || position >= size) throw std::out_of_range("erase");
 
-        for (int k = i; k < size - 1; ++k) {
+        for (int k = position; k < size - 1; ++k) {
             data[k] = data[k + 1];
         }
         --size;
@@ -261,7 +261,7 @@ int main() {
 
         // push_back
         sv.push_back("B");
-        sv.push_back("C");
+        sv.push_back("Mama");
         std::cout << "Po push_back B,C:     ";
         printSimpleVector(sv, 2);
 

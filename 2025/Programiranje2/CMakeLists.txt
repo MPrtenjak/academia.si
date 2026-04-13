@@ -10,6 +10,7 @@ add_executable(Programiranje2
 	"napredno.cpp"
     "srecanje1.cpp" 
     "srecanje1_naloge.cpp" 
+	"srecanje2.cpp" 
     "srecanje3.cpp" 
     "srecanje4.cpp" 
     "prim_dijkstra.cpp")
