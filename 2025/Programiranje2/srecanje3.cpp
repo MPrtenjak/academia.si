@@ -75,10 +75,54 @@ int main()
 
 #endif
 
+#ifdef LOOKUP_10
+
+int main()
+{
+    map<int, string> postOffices;
+    
+    postOffices[1000] = "Ljubljana";
+    postOffices[2000] = "Maribor";
+    postOffices[3000] = "Celje";
+    postOffices[4000] = "Kranj";
+    postOffices[5000] = "Nova Gorica";
+    postOffices[6000] = "Koper";
+    postOffices[8000] = "Novo mesto";
+    postOffices[9000] = "Murska Sobota";
+    
+    cout << "Seznam vseh poštnih številk:" << endl;
+    for (map<int, string>::iterator it = postOffices.begin(); 
+         it != postOffices.end(); ++it)
+    {
+        cout << it->first << " - " << it->second << endl;
+    }
+    cout << endl;
+    
+    int postalCode;
+    cout << "Vnesi poštno številko za iskanje (0 za konec): ";
+    
+    while (cin >> postalCode && postalCode != 0)
+    {
+        map<int, string>::iterator it = postOffices.find(postalCode);
+        
+        if (it != postOffices.end())
+        {
+            cout << "Kraj: " << it->second << endl;
+        }
+        else
+        {
+            cout << "Poštna številka " << postalCode << " ni bila najdena." << endl;
+        }
+        
+        cout << "Vnesi poštno številko za iskanje (0 za konec): ";
+    }
+    
+    return 0;
+}
+
+#endif
+
 #ifdef ASSOCIATIVE_CONTAINER_20
-
-
-using namespace std;
 
 struct User
 {
