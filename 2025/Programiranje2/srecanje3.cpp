@@ -122,6 +122,44 @@ int main()
 
 #endif
 
+#ifdef LOOKUP_20
+
+int main()
+{
+    map<string, string> peopleSizes;
+
+    peopleSizes["xxs"] = "extra extra small";
+    peopleSizes["xs"] = "extra small";
+    peopleSizes["s"] = "small";
+    peopleSizes["m"] = "middle";
+    peopleSizes["l"] = "large";
+    peopleSizes["xl"] = "extra large";
+    peopleSizes["xxl"] = "extra large large";
+
+    string size;
+    cout << "Vnesi velikost (prazno za konec): ";
+
+    while (cin >> size && !size.empty())
+    {
+        map<string, string>::iterator it = peopleSizes.find(size);
+
+        if (it != peopleSizes.end())
+        {
+            cout << "Velikost: " << it->second << endl;
+        }
+        else
+        {
+            cout << "velikost " << size << " ni bila najdena." << endl;
+        }
+
+        cout << "Vnesi velikost (prazno za konec): ";
+    }
+
+    return 0;
+}
+
+#endif
+
 #ifdef ASSOCIATIVE_CONTAINER_20
 
 struct User
@@ -141,11 +179,11 @@ int main()
 
     multimap<string, User> usersBySurname;
 
-    usersBySurname.insert(pair<string, User>(u1.surname, u1));
-    usersBySurname.insert(pair<string, User>(u2.surname, u2));
-    usersBySurname.insert(pair<string, User>(u3.surname, u3));
-    usersBySurname.insert(pair<string, User>(u4.surname, u4));
-    usersBySurname.insert(pair<string, User>(u5.surname, u5));
+    usersBySurname.insert(pair<string, User>(u1.name, u1));
+    usersBySurname.insert(pair<string, User>(u2.name, u2));
+    usersBySurname.insert(pair<string, User>(u3.name, u3));
+    usersBySurname.insert(pair<string, User>(u4.name, u4));
+    usersBySurname.insert(pair<string, User>(u5.name, u5));
 
     cout << "Uporabniki, združeni po priimku:" << endl;
 

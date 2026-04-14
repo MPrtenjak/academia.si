@@ -110,7 +110,7 @@ int main() {
 
     for (int i = 0; i < 10; ++i) {
         int randomNumber = dis(gen);
-        std::cout << "Dodajam število " << randomNumber << std::endl;
+        std::cout << "Dodajam Å¡tevilo " << randomNumber << std::endl;
         heap.add(randomNumber);
         std::cout << "Vsebina polja ";
         heap.printInternalReprezentation();
