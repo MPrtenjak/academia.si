@@ -1,2 +1,1 @@
-#define AVL_TREE
-
+#define RESITEV_SRECANJE_3_NALOGA_7_8

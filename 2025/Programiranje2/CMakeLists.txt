@@ -13,7 +13,7 @@ add_executable(Programiranje2
 	"srecanje2.cpp" 
     "srecanje3.cpp" 
     "srecanje4.cpp" 
-    "prim_dijkstra.cpp" "AVL-tree.cpp")
+    "prim_dijkstra.cpp" "AVL-tree.cpp" "srecanje3_naloge.cpp")
 
 include(GNUInstallDirs)
 install(TARGETS Programiranje2
