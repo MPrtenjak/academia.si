@@ -11,12 +11,8 @@
 #include <string>
 #include <map>
 #include <algorithm>
-
-#ifdef _WIN32
-#include <windows.h>
-#include <io.h>
-#include <fcntl.h>
-#endif
+#include <random>
+#include <chrono>
 
 using namespace std;
 
@@ -117,90 +113,11 @@ int main()
 
 #ifdef RESITEV_SRECANJE_4_NALOGA_7
 
-class MergeSorter
-{
-private:
-    void merge(std::vector<int>& v, int left, int mid, int right)
-    {
-        std::vector<int> leftHalf;
-        std::vector<int> rightHalf;
-        
-        for (int i = left; i <= mid; i++)
-        {
-            leftHalf.push_back(v[i]);
-        }
-        
-        for (int i = mid + 1; i <= right; i++)
-        {
-            rightHalf.push_back(v[i]);
-        }
-        
-        int indexLeft = 0;
-        int indexRight = 0; 
-        int indexMerged = left; 
-        
-        while (indexLeft < leftHalf.size() && indexRight < rightHalf.size())
-        {
-            if (leftHalf[indexLeft] <= rightHalf[indexRight])
-            {
-                v[indexMerged] = leftHalf[indexLeft];
-                indexLeft++;
-            }
-            else
-            {
-                v[indexMerged] = rightHalf[indexRight];
-                indexRight++;
-            }
-            indexMerged++;
-        }
-        
-        // Copy remaining elements from leftHalf (if any)
-        while (indexLeft < leftHalf.size())
-        {
-            v[indexMerged] = leftHalf[indexLeft];
-            indexLeft++;
-            indexMerged++;
-        }
-        
-        // Copy remaining elements from rightHalf (if any)
-        while (indexRight < rightHalf.size())
-        {
-            v[indexMerged] = rightHalf[indexRight];
-            indexRight++;
-            indexMerged++;
-        }
-    }
-    
-    void mergeSortHelper(std::vector<int>& v, int left, int right)
-    {
-        if (left < right)
-        {
-            int mid = left + (right - left) / 2;
-           
-            mergeSortHelper(v, left, mid);
-            mergeSortHelper(v, mid + 1, right);
-            
-            merge(v, left, mid, right);
-        }
-    }
-
-public:
-    void MergeSort(std::vector<int>& v)
-    {
-        if (v.size() <= 1)
-            return;
-        
-        mergeSortHelper(v, 0, v.size() - 1);
-    }
-};
-
-// Hybrid MergeSort with InsertionSort for small subarrays
 class HybridMergeSorter
 {
 private:
     int threshold;
     
-    // InsertionSort for small subarrays
     void insertionSort(std::vector<int>& v, int left, int right)
     {
         for (int i = left + 1; i <= right; i++)
@@ -218,68 +135,59 @@ private:
         }
     }
     
-    // Helper function to merge two sorted halves
     void merge(std::vector<int>& v, int left, int mid, int right)
     {
-        // Create temporary vectors for left and right halves
         std::vector<int> leftHalf;
         std::vector<int> rightHalf;
-        
-        // Copy data to temporary left half
+
         for (int i = left; i <= mid; i++)
         {
             leftHalf.push_back(v[i]);
         }
-        
-        // Copy data to temporary right half
+
         for (int i = mid + 1; i <= right; i++)
         {
             rightHalf.push_back(v[i]);
         }
-        
-        // Merge the temporary vectors back into v[left..right]
-        int i = 0; // Index for leftHalf
-        int j = 0; // Index for rightHalf
-        int k = left; // Index for merged vector
-        
-        while (i < leftHalf.size() && j < rightHalf.size())
+
+        int indexLeft = 0;
+        int indexRight = 0;
+        int indexMerged = left;
+
+        while (indexLeft < leftHalf.size() && indexRight < rightHalf.size())
         {
-            if (leftHalf[i] <= rightHalf[j])
+            if (leftHalf[indexLeft] <= rightHalf[indexRight])
             {
-                v[k] = leftHalf[i];
-                i++;
+                v[indexMerged] = leftHalf[indexLeft];
+                indexLeft++;
             }
             else
             {
-                v[k] = rightHalf[j];
-                j++;
+                v[indexMerged] = rightHalf[indexRight];
+                indexRight++;
             }
-            k++;
+            indexMerged++;
         }
-        
-        // Copy remaining elements from leftHalf (if any)
-        while (i < leftHalf.size())
+
+        while (indexLeft < leftHalf.size())
         {
-            v[k] = leftHalf[i];
-            i++;
-            k++;
+            v[indexMerged] = leftHalf[indexLeft];
+            indexLeft++;
+            indexMerged++;
         }
-        
-        // Copy remaining elements from rightHalf (if any)
-        while (j < rightHalf.size())
+
+        while (indexRight < rightHalf.size())
         {
-            v[k] = rightHalf[j];
-            j++;
-            k++;
+            v[indexMerged] = rightHalf[indexRight];
+            indexRight++;
+            indexMerged++;
         }
     }
-    
-    // Helper function to recursively divide and sort
+
     void mergeSortHelper(std::vector<int>& v, int left, int right)
     {
         if (left < right)
         {
-            // If the subarray size is below threshold, use InsertionSort
             int size = right - left + 1;
             if (size <= threshold)
             {
@@ -287,31 +195,22 @@ private:
                 return;
             }
             
-            // Find the middle point
             int mid = left + (right - left) / 2;
             
-            // Sort first half
             mergeSortHelper(v, left, mid);
-            
-            // Sort second half
             mergeSortHelper(v, mid + 1, right);
             
-            // Merge the sorted halves
             merge(v, left, mid, right);
         }
     }
 
 public:
-    // Constructor with threshold parameter (default is 10)
     HybridMergeSorter(int thresh = 10) : threshold(thresh) {}
     
-    // Public function to sort the vector
     void MergeSort(std::vector<int>& v)
     {
         if (v.size() <= 1)
-        {
-            return; // Already sorted
-        }
+            return; 
         
         mergeSortHelper(v, 0, v.size() - 1);
     }
@@ -327,24 +226,56 @@ void printOut(vector<int>& v)
 
 int main()
 {
+    /*
     vector<int> numbers = { 44, 80, 10, 10, 82, 86, 32, 44, 66, 36, 5, 9, 98, 41, 91, 73, 53, 96, 48 };
     
     cout << "Original: ";
     printOut(numbers);
     
-    // Test basic MergeSort
-    MergeSorter sorter1;
+    HybridMergeSorter sorter1(-1);
     vector<int> copy1 = numbers;
     sorter1.MergeSort(copy1);
-    cout << "Basic MergeSort: ";
+    cout << "Sortirano I  : ";
     printOut(copy1);
     
-    // Test hybrid MergeSort with threshold of 5
     HybridMergeSorter sorter2(5);
     vector<int> copy2 = numbers;
     sorter2.MergeSort(copy2);
-    cout << "Hybrid MergeSort (threshold=5): ";
+    cout << "Sortirano II : ";
     printOut(copy2);
+    */
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(1, 100000);
+
+    std::vector<int> vector_size = { 1000, 10000, 100000, 1000000 };
+    std::vector<int> threshold_size = { -1, 50, 100, 200, 300, 500 };
+
+
+    for (size_t i = 0; i < vector_size.size(); i++)
+    {
+        int n = vector_size[i];
+        vector<int> numbers(n);
+        for (int i = 0; i < n; ++i) {
+            int randomNumber = dis(gen);
+            numbers[i] = randomNumber;
+        }
+
+        for (size_t j = 0; j < threshold_size.size(); j++)
+        {
+			int threshold = threshold_size[j];
+
+            auto chronoStart = std::chrono::high_resolution_clock::now();
+            HybridMergeSorter sorter1(threshold);
+            vector<int> copy1 = numbers;
+            sorter1.MergeSort(copy1);
+            auto chronoEnd = std::chrono::high_resolution_clock::now();
+
+            auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(chronoEnd - chronoStart).count();
+            cout << "Sort z velikostjo [" << n << "] in mejo sortiranja [" << threshold << "] se izvaja [" << ms << "] ms" << endl;
+        }
+    }
 }
 
 #endif
