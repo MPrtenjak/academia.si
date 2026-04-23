@@ -113,28 +113,50 @@ int main()
 
 #ifdef RESITEV_SRECANJE_4_NALOGA_7
 
-class HybridMergeSorter
+class HybridSorter
 {
-private:
+protected:
+    string name;
     int threshold;
-    
+
     void insertionSort(std::vector<int>& v, int left, int right)
     {
         for (int i = left + 1; i <= right; i++)
         {
             int key = v[i];
             int j = i - 1;
-            
+
             while (j >= left && v[j] > key)
             {
                 v[j + 1] = v[j];
                 j--;
             }
-            
+
             v[j + 1] = key;
         }
     }
-    
+
+public:
+    HybridSorter(string name) : threshold(-1), name(name) {}
+
+    void SetThreshold(int t) {
+        threshold = t;
+    }
+
+    int GetThreshold() {
+        return threshold;
+    }
+
+    string GetName() {
+        return name;
+    }
+
+    virtual void Sort(std::vector<int>& v) = 0;
+};
+
+class HybridMergeSorter : public HybridSorter
+{
+private:
     void merge(std::vector<int>& v, int left, int mid, int right)
     {
         std::vector<int> leftHalf;
@@ -205,14 +227,65 @@ private:
     }
 
 public:
-    HybridMergeSorter(int thresh = 10) : threshold(thresh) {}
+    HybridMergeSorter() : HybridSorter("MERGE SORT") {}
     
-    void MergeSort(std::vector<int>& v)
+    void Sort(std::vector<int>& v)
     {
         if (v.size() <= 1)
             return; 
         
         mergeSortHelper(v, 0, v.size() - 1);
+    }
+};
+
+class HybridQuickSorter : public HybridSorter
+{
+private:
+    int partition(std::vector<int>& v, int left, int right)
+    {
+        int pivot = v[right];
+        int i = left - 1;
+
+        for (int j = left; j < right; j++)
+        {
+            if (v[j] <= pivot)
+            {
+                i++;
+                std::swap(v[i], v[j]);
+            }
+        }
+
+        std::swap(v[i + 1], v[right]);
+        return i + 1;
+    }
+
+    void quickSortHelper(std::vector<int>& v, int left, int right)
+    {
+        if (left < right)
+        {
+            int size = right - left + 1;
+            if (size <= threshold)
+            {
+                insertionSort(v, left, right);
+                return;
+            }
+
+            int pivotIndex = partition(v, left, right);
+
+            quickSortHelper(v, left, pivotIndex - 1);
+            quickSortHelper(v, pivotIndex + 1, right);
+        }
+    }
+
+public:
+    HybridQuickSorter() : HybridSorter("QUICK SORT") {}
+
+    void Sort(std::vector<int>& v)
+    {
+        if (v.size() <= 1)
+            return;
+
+        quickSortHelper(v, 0, v.size() - 1);
     }
 };
 
@@ -249,31 +322,40 @@ int main()
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(1, 100000);
 
-    std::vector<int> vector_size = { 1000, 10000, 100000, 1000000 };
-    std::vector<int> threshold_size = { -1, 50, 100, 200, 300, 500 };
+    std::vector<int> vector_size = { 10000, 100000, 1000000 };
+    std::vector<int> threshold_size = { -1, 20, 50, 100, 200, 300, 500 };
+    HybridSorter* sorters[2] = {new HybridMergeSorter(), new HybridQuickSorter()};
 
-
-    for (size_t i = 0; i < vector_size.size(); i++)
+    for (size_t sorter = 0; sorter < 2; sorter++)
     {
-        int n = vector_size[i];
-        vector<int> numbers(n);
-        for (int i = 0; i < n; ++i) {
-            int randomNumber = dis(gen);
-            numbers[i] = randomNumber;
-        }
+        HybridSorter *currentSorter = sorters[sorter];
 
-        for (size_t j = 0; j < threshold_size.size(); j++)
+        for (size_t i = 0; i < vector_size.size(); i++)
         {
-			int threshold = threshold_size[j];
+            int n = vector_size[i];
+            vector<int> numbers(n);
+            for (int i = 0; i < n; ++i) {
+                int randomNumber = dis(gen);
+                numbers[i] = randomNumber;
+            }
 
-            auto chronoStart = std::chrono::high_resolution_clock::now();
-            HybridMergeSorter sorter1(threshold);
-            vector<int> copy1 = numbers;
-            sorter1.MergeSort(copy1);
-            auto chronoEnd = std::chrono::high_resolution_clock::now();
+            for (size_t j = 0; j < threshold_size.size(); j++)
+            {
+                int threshold = threshold_size[j];
 
-            auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(chronoEnd - chronoStart).count();
-            cout << "Sort z velikostjo [" << n << "] in mejo sortiranja [" << threshold << "] se izvaja [" << ms << "] ms" << endl;
+                auto chronoStart = std::chrono::high_resolution_clock::now();
+                vector<int> copy1 = numbers;
+                currentSorter->SetThreshold(threshold);
+                currentSorter->Sort(copy1);
+                auto chronoEnd = std::chrono::high_resolution_clock::now();
+
+                auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(chronoEnd - chronoStart).count();
+                cout << currentSorter->GetName() 
+                     << " z velikostjo[" << n 
+                     << "] in mejo sortiranja[" << threshold 
+                     << "] se izvaja[" << ms << "] ms" 
+                     << endl;
+            }
         }
     }
 }
