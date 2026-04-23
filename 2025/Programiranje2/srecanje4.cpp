@@ -34,7 +34,7 @@ void bubbleSort(int a[], int n)
 
 int main()
 {
-    int a[] = { 42, 7, 19, 3, 25, 10 };
+    int a[] = { 42, 7, 19, 3, 25, 10,54,235,345,43,6453,654,7,4567,546,745,68,546,3452,52,1421,4,235,34,6123,41,234,124,123,51,2 };
     int n = sizeof(a) / sizeof(a[0]);
     int i;
 
@@ -92,11 +92,11 @@ int main()
 {
     User users[] =
     {
-        {"Ana", "Novak", 22},
-        {"Boris", "Kovac", 30},
         {"Cene", "Horvat", 27},
-        {"Dora", "Zupan", 25},
-        {"Eva", "Bizjak", 19}
+        {"Ana", "Novak", 22},
+        {"Eva", "Bizjak", 19},
+        {"Boris", "Kovac", 30},
+        {"Dora", "Zupan", 25}
     };
 
     int n = sizeof(users) / sizeof(users[0]);
@@ -163,7 +163,7 @@ void bubbleSort(T data[], int N, bool (*compare)(const T&, const T&))
 
 bool compareInt(const int& a, const int& b)
 {
-    return a > b;
+    return a < b;
 }
 
 bool compareUserBySurname(const User& a, const User& b)
@@ -173,7 +173,7 @@ bool compareUserBySurname(const User& a, const User& b)
 
 bool compareUserByName(const User& a, const User& b)
 {
-    return a.name > b.name;
+    return a.name < b.name;
 }
 
 void printInts(int data[], int N)
@@ -201,7 +201,7 @@ void printUsers(User data[], int N)
 
 int main()
 {
-    int numbers[] = { 42, 7, 19, 3, 25, 10 };
+    int numbers[] = { 42, 7, 19, 3, 25, 10,54,235,345,43,6453,654,7,4567,546,745,68,546,3452,52,1421,4,235,34,6123,41,234,124,123,51,2 };
     int nNumbers = sizeof(numbers) / sizeof(numbers[0]);
 
     User users[] =

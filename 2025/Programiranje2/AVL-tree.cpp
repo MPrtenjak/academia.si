@@ -176,6 +176,16 @@ public:
 class AVLTreeConsole : public AVLTree
 {
 private:
+    void preorder(Node* node) const
+    {
+        if (!node)
+            return;
+
+        std::cout << node->key << ' ';
+        preorder(node->left);
+        preorder(node->right);
+    }
+
     void inorder(Node *node) const
     {
         if (!node)
@@ -184,6 +194,16 @@ private:
         inorder(node->left);
         std::cout << node->key << ' ';
         inorder(node->right);
+    }
+
+    void postorder(Node* node) const
+    {
+        if (!node)
+            return;
+
+        postorder(node->left);
+        postorder(node->right);
+        std::cout << node->key << ' ';
     }
 
     int treeHeight(Node* node) const
@@ -243,9 +263,21 @@ private:
     }
 
 public:
+    void printPreOrder() const
+    {
+        preorder(root);
+        std::cout << '\n';
+    }
+
     void printInOrder() const
     {
         inorder(root);
+        std::cout << '\n';
+    }
+
+    void printPostOrder() const
+    {
+        postorder(root);
         std::cout << '\n';
     }
 
@@ -265,18 +297,22 @@ int main()
     {
         std::cout << "Dodaj: " << *v << "\n\n";
         tree.insert(*v);
-        tree.printTree();
+        // tree.printTree();
     }
 
     std::cout << "Result ";
+    tree.printTree();
+
+    tree.printPreOrder();
     tree.printInOrder();
+    tree.printPostOrder();
 
     std::vector<int> removeNumbers = { 3, 7, 8, 9, 4 };
     for (std::vector<int>::iterator v = removeNumbers.begin(); v != removeNumbers.end(); ++v)
     {
         std::cout << "Odstrani: " << *v << "\n\n";
         tree.remove(*v);
-        tree.printTree();
+        // tree.printTree();
     }
     
     return 0;

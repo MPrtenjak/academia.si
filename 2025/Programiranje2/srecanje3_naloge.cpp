@@ -10,6 +10,7 @@
 #include <queue>
 #include <string>
 #include <map>
+#include <algorithm>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -23,7 +24,7 @@ using namespace std;
 
 int main()
 {
-	const int NUM_BUCKETS = 8;
+	const int NUM_BUCKETS = 12;
 
 	vector<double> numbers = { 0.35, 1.163, 1.312, 0.493, 0.478, 0.9913, 0.95112, 0.4, 1.2356, 0.6 };
 	for (vector<double>::iterator i = numbers.begin(); i != numbers.end(); ++i)
@@ -93,8 +94,6 @@ void AskForNewOwner(std::string& telephonNumber, std::map<std::string, Owner>& t
 
 int main()
 {
-	const int NUM_BUCKETS = 8;
-
 	vector<Owner> owners = getRandomData();
 
 	map<string, Owner> telephonNumberLookup;
