@@ -1,1 +1,1 @@
-#define OBSERVER_RESITEV
+#define DIP_RESITEV
