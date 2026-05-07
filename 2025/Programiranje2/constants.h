@@ -1,1 +1,1 @@
-#define RESITEV_SRECANJE_5
+#define SOLID_BAD
