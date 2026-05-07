@@ -1,1 +1,1 @@
-#define DIP_RESITEV
+#define RESITEV_SRECANJE_5
