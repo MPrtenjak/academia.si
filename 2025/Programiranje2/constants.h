@@ -1,1 +1,1 @@
-#define SOLID_BAD
+#define OBSERVER_RESITEV

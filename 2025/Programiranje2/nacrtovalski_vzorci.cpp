@@ -35,6 +35,9 @@ int main() {
     Buffer buf1;
     Buffer buf2 = buf1;
 
+    int a = 10;
+    int b = a;
+
     cout << "Tik pred koncem programa" << endl;
     return 0;
 }
@@ -89,6 +92,13 @@ public:
         data = new int[10];
     }
 
+    Buffer(const Buffer& other) {
+        cout << "Izvajam copy konstruktor" << endl;
+        data = new int[10];
+        for (int i = 0; i < 10; i++)
+            data[i] = other.data[i];
+    }
+
     ~Buffer() {
         cout << "Uničujem prostor za shranjevanje" << endl;
         delete[] data;
@@ -100,7 +110,7 @@ int main() {
     Buffer buf1;
     Buffer buf2;
 
-    buf1 = buf2;
+    buf2 = buf1;
 
     cout << "Tik pred koncem programa" << endl;
     return 0;
@@ -178,6 +188,53 @@ int main() {
 
 #endif
 
+#ifdef STATIC_USAGE
+
+
+class Buffer {
+private:
+    static int numberOfObjects;
+    int wrongNumberOfObjects;
+    int* data;
+
+public:
+    Buffer() {
+        cout << "Ustvarim prostor za shranjevanje " << sizeof(int) * 10 << " bajtov" << endl;
+        data = new int[10];
+        numberOfObjects++;
+		cout << "Število objektov: " << numberOfObjects << endl;
+
+        wrongNumberOfObjects = 1;
+        cout << "Število objektov (wrong): " << wrongNumberOfObjects << endl;
+    }
+
+    ~Buffer() {
+        cout << "Uničujem prostor za shranjevanje" << endl;
+        delete[] data;
+
+		numberOfObjects--;
+        cout << "Število objektov: " << numberOfObjects << endl;
+
+        wrongNumberOfObjects--;
+        cout << "Število objektov (wrong): " << wrongNumberOfObjects << endl;
+    }
+};
+
+int Buffer::numberOfObjects = 0;
+
+int main() {
+    cout << "Začetek programa" << endl;
+    Buffer buf1;
+    Buffer buf2;
+    Buffer buf3;
+    Buffer buf4;
+
+
+    cout << "Tik pred koncem programa" << endl;
+    return 0;
+}
+#endif
+
 #ifdef SINGELTON_RESITEV
 
 class Config {
@@ -195,7 +252,7 @@ public:
     int value = 0;
 };
 
-Config* Config::instance = 0;
+Config* Config::instance = 0; /* NULL, std::nullptr_t*/
 
 int main() {
     Config* config1 = Config::getInstance();
@@ -214,6 +271,10 @@ int main() {
 
 #ifdef FACTORY_PROBLEM
 
+#define TRUCK 1
+#define SHIP 2
+#define PLANE 3
+
 class Truck {
 public:
     void drive() {
@@ -228,18 +289,29 @@ public:
     }
 };
 
+class Plane {
+public:
+    void fly() {
+        cout << "Dostava z letalom po zraku." << endl;
+    }
+};
+
 class LogisticsApp {
 public:
     void planDelivery(int type) {
         cout << "Načrtujem dostavo..." << endl;
 
-        if (type == 1) {
+        if (type == TRUCK) {
             Truck truck;
 			truck.drive();
         }
-        else if (type == 2) {
+        else if (type == SHIP) {
 			Ship ship;
 			ship.sail();
+        }
+        else if (type == PLANE) {
+            Plane plane;
+            plane.fly();
         }
         else {
             cout << "Napačen tip dostave." << endl;
@@ -251,8 +323,9 @@ public:
 int main() {
     LogisticsApp app;
 
-    app.planDelivery(1);
-    app.planDelivery(2);
+    app.planDelivery(TRUCK);
+    app.planDelivery(SHIP);
+    app.planDelivery(PLANE);
 
     return 0;
 }
@@ -412,16 +485,14 @@ int main() {
     logistics->planDelivery();
     delete logistics;
 
-    /*
     cout << endl << endl;
-    vector<Logistics*> logisticsOptions = { new RoadLogistics(), new SeaLogistics(), new AirLogistics() };
+    vector<Logistics*> logisticsOptions = { new RoadLogistics(), new SeaLogistics(), new RoadLogistics() };
     for (vector<Logistics*>::iterator i = logisticsOptions.begin(); i != logisticsOptions.end(); i++)
     {
         (*i)->planDelivery();
         cout << endl;
         delete* i;
     }
-    */
 
     /*
     cout << endl << endl;
@@ -531,16 +602,16 @@ public:
         computer = new Computer();
     }
 
-    void buildRam(int r) {
+    void addRAM(int r) {
         computer->setRam(r);
     }
 
-    void buildDisk(int d) {
+    void addDisk(int d) {
         computer->setDisk(d);
     }
 
-    void buildGraphicsCard(int g) {
-        computer->setGraphicsCard(g);
+    void installGraphicsCard() {        
+        computer->setGraphicsCard(1);
     }
 
     Computer* getResult() {
@@ -550,20 +621,17 @@ public:
 
 int main() {
     ComputerBuilder officeBuilder;
-    officeBuilder.buildRam(8);
-    officeBuilder.buildDisk(256);
-    officeBuilder.buildGraphicsCard(0);
+    officeBuilder.addRAM(8);
+    officeBuilder.addDisk(256);
 
     Computer* officeComputer = officeBuilder.getResult();
     officeComputer->show();
     delete officeComputer;
 
-
-
     ComputerBuilder gamingBuilder;
-	gamingBuilder.buildRam(32);
-	gamingBuilder.buildDisk(1000);
-    gamingBuilder.buildGraphicsCard(1);
+	gamingBuilder.addRAM(32);
+	gamingBuilder.addDisk(1000);
+    gamingBuilder.installGraphicsCard();
 
     Computer* gamingComputer = gamingBuilder.getResult();
     gamingComputer->show();
@@ -790,6 +858,20 @@ public:
     }
 };
 
+class ChocolateDecorator : public CoffeeDecorator {
+public:
+    ChocolateDecorator(Coffee* c) : CoffeeDecorator(c) {}
+
+    int cost() {
+        return coffee->cost() + 2;
+    }
+
+    void description() {
+        coffee->description();
+        cout << " + cokolada";
+    }
+};
+
 
 /*
 * preprosto lahko dodamo še npr. ChocolateDecorator 
@@ -798,8 +880,9 @@ public:
 int main() {
     Coffee* coffee = new SimpleCoffee();
 
+    // coffee = new SugarDecorator(coffee);
     coffee = new MilkDecorator(coffee);
-    coffee = new SugarDecorator(coffee);
+    coffee = new ChocolateDecorator(coffee);
 
     coffee->description();
     cout << " | Cena: " << coffee->cost() << endl;
@@ -813,18 +896,24 @@ int main() {
 
 #ifdef STRATEGY_PROBLEM
 
+enum CustomerType {
+    REGULAR = 1,
+    STUDENT = 2,
+	VIP = 3
+};
+
 class Checkout {
 public:
     int finalPrice(int price, int customerType) {
-        if (customerType == 1) {
+        if (customerType == REGULAR) {
             cout << "Navadna stranka" << endl;
             return price;
         }
-        else if (customerType == 2) {
+        else if (customerType == STUDENT) {
             cout << "Student" << endl;
             return price - (price * 10 / 100);
         }
-        else if (customerType == 3) {
+        else if (customerType == VIP) {
             cout << "VIP stranka" << endl;
             return price - (price * 20 / 100);
         }
@@ -836,9 +925,9 @@ public:
 int main() {
     Checkout checkout;
 
-    cout << "Cena: " << checkout.finalPrice(100, 1) << endl;
-    cout << "Cena: " << checkout.finalPrice(100, 2) << endl;
-    cout << "Cena: " << checkout.finalPrice(100, 3) << endl;
+    cout << "Cena: " << checkout.finalPrice(100, REGULAR) << endl;
+    cout << "Cena: " << checkout.finalPrice(100, STUDENT) << endl;
+    cout << "Cena: " << checkout.finalPrice(100, VIP) << endl;
 
     return 0;
 }
@@ -878,6 +967,14 @@ public:
     }
 };
 
+class EmployeeDiscount : public DiscountStrategy {
+public:
+    int calculate(int price) {
+        cout << "Zaposleni" << endl;
+        return price - (price * 40 / 100);
+    }
+};
+
 class Checkout {
 private:
     DiscountStrategy* strategy;
@@ -910,6 +1007,10 @@ int main() {
     checkout.setStrategy(&vipDiscount);
     cout << "Cena: " << checkout.finalPrice(100) << endl;
 
+    EmployeeDiscount employeeDiscount;
+    checkout.setStrategy(&employeeDiscount);
+    cout << "Cena: " << checkout.finalPrice(100) << endl;
+
     return 0;
 }
 
@@ -936,11 +1037,21 @@ public:
     }
 };
 
+class AC {
+public:
+    void adjustTemperature(int value) {
+        if ((value > 30) || (value < 15)) {
+            cout << "AC: prilagajam temperaturo - prižgal sem klimo" << endl;
+        }
+	}
+};
+
 class TemperatureSensor {
 private:
     int temperature;
     Display* display;
     Alarm* alarm;
+    AC* ac;
 
 public:
     TemperatureSensor(Display* d, Alarm* a) {
@@ -954,6 +1065,7 @@ public:
 
         display->showTemperature(temperature);
         alarm->checkTemperature(temperature);
+        ac->adjustTemperature(temperature);
     }
 };
 
@@ -988,11 +1100,20 @@ public:
     }
 };
 
+class AC : public Observer {
+public:
+    void update(int value) {
+        if ((value > 30) || (value < 15)) {
+            cout << "AC: prilagajam temperaturo - prižgal sem klimo" << endl;
+        }
+    }
+};
+
 class Alarm : public Observer {
 public:
     void update(int value) {
         if (value > 30) {
-            cout << "Alarm: temperatura je previsoka!" << endl;
+            cout << "Alarm: temperatura je previsoka!!!!!!!!!!" << endl;
         }
         else {
             cout << "Alarm: temperatura je normalna." << endl;
@@ -1063,6 +1184,17 @@ int main() {
     sensor.setTemperature(25);
     cout << endl;
     sensor.setTemperature(35);
+
+    cout << endl;
+    cout << endl;
+
+	AC ac;
+    sensor.attach(&ac);
+    sensor.setTemperature(40);
+
+    //.....
+    sensor.detach(&alarm);
+    sensor.setTemperature(10);
 
     return 0;
 }
