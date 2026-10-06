@@ -1,5 +1,15 @@
 # HTML in CSS – osnove spletne strani
 
+## HTML/CSS "editor"-ji
+
+* spletni
+  * [Code Pen](https://codepen.io/)
+  * [JS Fiddle](https://jsfiddle.net/)
+  * [Code Sandbox](https://codesandbox.io/)
+* lokalni
+  * [VS Code](https://code.visualstudio.com/)
+  * [Notepad++](https://notepad-plus-plus.org/)
+
 ## Spletna stran v brskalniku
 
 Ko odpremo spletno stran, brskalnik prenese njene datoteke in jih prikaže na zaslonu.

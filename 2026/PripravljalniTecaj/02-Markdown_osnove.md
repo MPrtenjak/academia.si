@@ -2,10 +2,14 @@
 
 ## Markdown "editor"-ji
 
-* [dillinger.io](https://dillinger.io) ~ https://dillinger.io
-* [stackedit.io](https://stackedit.io/) ~ https://stackedit.io
-* [markdownlivepreview.com](https://markdownlivepreview.com/) ~ https://markdownlivepreview.com
-* ...
+* spletni
+  * [dillinger.io](https://dillinger.io)
+  * [stackedit.io](https://stackedit.io/)
+  * [MarkDown Live Preview](https://markdownlivepreview.com/)
+* lokalni
+  * [VS Code](https://code.visualstudio.com/)
+  * [Obsidian](https://obsidian.md/)
+  * [Zettlr](https://www.zettlr.com/)
 
 ## Kaj je Markdown?
 
