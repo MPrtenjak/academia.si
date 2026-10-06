@@ -3,7 +3,7 @@
 * Matjaž Prtenjak
 * Predavam osnovne predmete računalništva in informatike; programiranje I, II...
 * Imam 35 let izkušenj iz prakse
-* e-naslov: [matjaz.prtenjak@academia.com](mailto:matjaz.prtenjak@academia.si)
+* e-naslov: [matjaz.prtenjak@academia.si](mailto:matjaz.prtenjak@academia.si)
 
 ## Kaj morate instalirati do naslednjič
 
