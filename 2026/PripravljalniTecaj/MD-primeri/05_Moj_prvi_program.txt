@@ -1,0 +1,12 @@
+Moj prvi program
+
+Računalniški program lahko izpiše kratko sporočilo. Naslednji primer je napisan v jeziku JavaScript.
+
+Besedilo, ki ga program izpiše, je Pozdravljeni, tečajniki!
+
+Primer programa
+console.log("Pozdravljeni, tečajniki!");
+
+Ukaz console.log prikaže besedilo na zaslonu. Besedilo med narekovaji lahko spremenimo. Na primer, program lahko izpiše Danes se učimo Markdown.
+
+Pri urejanju tega besedila bodi pozoren na naslov, podnaslove, poudarjene izraze, seznam ključnih korakov in prikaz programske kode. Na koncu dodaj še tri kratke korake za preizkus programa.

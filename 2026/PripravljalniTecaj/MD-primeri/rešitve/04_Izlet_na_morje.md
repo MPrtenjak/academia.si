@@ -1,0 +1,19 @@
+# Izlet na morje
+
+V soboto smo se odpravili na izlet v **Piran**. Zjutraj smo se z avtobusom pripeljali do obale, nato pa smo se sprehodili do Tartinijevega trga.
+
+## Kaj smo si ogledali
+
+Na poti smo si ogledali staro mestno jedro in mestno obzidje. Več o njem lahko preberemo na [strani o mestnem obzidju Pirana](https://www.portoroz.si/sl/kaj-poceti/kultura-in-zgodovina/mestno-obzidje-piran/). Podatke o avtobusih najdemo na [spletni strani Avtobusne postaje Ljubljana](https://www.ap-ljubljana.si/).
+
+> Piran je najlepši, ko se sonce počasi spušča za obzorje.
+
+## Stroški in oprema
+
+Za izlet smo porabili približno **25 evrov**. Strošek je vključeval prevoz in kosilo.
+
+S seboj smo vzeli:
+
+- vodo
+- sončna očala
+- fotoaparat
