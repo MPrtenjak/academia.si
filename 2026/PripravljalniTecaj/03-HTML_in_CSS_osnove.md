@@ -74,7 +74,7 @@ Nekateri elementi nimajo končne oznake, na primer slika:
 |---|---|
 | `<h1>` do `<h6>` | Naslovi različnih ravni. |
 | `<p>` | Odstavek besedila. |
-| `<strong>` | Pomembno oziroma krepko besedilo. |
+| `<strong>`, `<b>` | Pomembno oziroma krepko besedilo. |
 | `<a>` | Povezava. |
 | `<img>` | Slika. |
 | `<ul>` in `<li>` | Neoštevilčen seznam. |
